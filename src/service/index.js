@@ -1,6 +1,6 @@
-import { EndpointsByServiceMap, getServiceMethod, isProperlyService } from './_meta'
-import { StatusCode as c } from "./codes"
-import { ServiceError } from "./errors"
+import { EndpointsByServiceMap, getServiceMethod, isProperlyService } from './___meta-methods___'
+import { StatusCode as c } from '../codes'
+import { ServiceError } from '../errors'
 
 export default class BaseService {
   constructor(req, res) {

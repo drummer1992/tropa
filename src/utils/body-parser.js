@@ -6,12 +6,12 @@ const parse = str => {
   }
 }
 
-export const parseBody = req => new Promise((resolve, reject) => {
+export default async req => {
   const buffer = []
 
-  req.on('error', reject)
-  req.on('data', chunk => buffer.push(chunk))
-  req.on('end', () => {
-    resolve(parse(Buffer.concat(buffer).toString()))
-  })
-})
+  for await (const chunk of req) {
+    buffer.push(chunk)
+  }
+
+  return parse(Buffer.concat(buffer).toString())
+}

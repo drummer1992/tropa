@@ -1,7 +1,7 @@
-import { addEndpoint, getApiPrefix, setApiPrefix, setServiceRegExp } from './_meta'
-import { isObject } from "./utils/object"
-import Url from "./utils/url"
-import { parseBody } from "./utils/body-parser"
+import { addEndpoint, getApiPrefix, setApiPrefix, setServiceRegExp } from './service/___meta-methods___'
+import { isObject } from './utils/object'
+import Url from './utils/url'
+import bodyParser from './utils/body-parser'
 
 export function Service(name) {
   return function(Clazz) {
@@ -56,7 +56,7 @@ function Endpoint(method, pathOrOptions) {
       this.request.queryParams = url.parseQueryParams(this.request.url)
 
       if (options.parseBody) {
-        this.request.body = await parseBody(this._req)
+        this.request.body = await bodyParser(this._req)
       }
 
       return endpoint.call(this, {

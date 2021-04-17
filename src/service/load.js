@@ -1,6 +1,6 @@
 import fs from 'fs/promises'
 import path from 'path'
-import { InternalError } from "./errors"
+import { InternalError } from '../errors'
 
 const getJsFilesInDir = async pathToDir => {
   const dir = await fs.readdir(path.resolve(__dirname, pathToDir))

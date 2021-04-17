@@ -1,4 +1,5 @@
-import { BaseService, ApiPrefix } from "../.."
+import { ApiPrefix } from "../../decorators"
+import { BaseService } from "../../"
 import { ErrorHandler } from "./decorators/error-handler"
 
 @ApiPrefix('/api/v2')

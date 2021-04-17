@@ -1,4 +1,4 @@
-import { StatusCode as c } from "./codes"
+import { StatusCode as c } from './codes'
 
 export class ServiceError extends Error {
   constructor(message, statusCode) {

@@ -1,14 +1,17 @@
 import http from 'http'
-import path from 'path'
 import AppService from "./services/app-service"
-import { initRouting, initServices } from '../'
+import { Routing } from '../'
+import path from "path"
 
+const pathToServices = path.resolve(__filename, '../services')
 const PORT = 3000
 
 async function init() {
-  await initServices(path.resolve(__filename, '../services'))
+  const routing = new Routing(AppService)
 
-  http.createServer(initRouting(AppService)).listen(PORT, () => {
+  const requestListener = await routing.init(pathToServices)
+
+  http.createServer(requestListener).listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
   })
 }

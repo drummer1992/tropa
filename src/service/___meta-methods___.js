@@ -1,4 +1,4 @@
-import { InternalError } from "./errors"
+import { InternalError } from '../errors'
 
 export const EndpointsByServiceMap = new Map()
 export const RegExpByServiceMap = new Map()

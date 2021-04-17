@@ -1,4 +1,4 @@
-import { Service, Get, Post } from '../..'
+import { Get, Post, Service } from '../../decorators'
 import AppService from "./app-service"
 
 @Service('/')
