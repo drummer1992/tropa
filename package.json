@@ -1,0 +1,29 @@
+{
+  "name": "fun-routing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "start": "babel-node --trace-warnings ./app-example",
+    "build": "npx babel ./src --out-dir lib",
+    "lint": "eslint ./ --ext .js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/eslint-parser": "^7.13.8",
+    "@babel/node": "^7.13.0",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-decorators": "^7.13.5",
+    "@babel/plugin-proposal-private-methods": "^7.13.0",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.9",
+    "@babel/register": "^7.13.8",
+    "eslint": "^7.21.0"
+  },
+  "dependencies": {
+  }
+}
