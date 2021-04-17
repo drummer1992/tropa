@@ -1,17 +1,36 @@
-import { Get, Post, Service } from '../../decorators'
+import { Get, Post, Put, Service, Delete, StatusCode } from '../../decorators'
+import { HttpCode as c } from '../..'
 import AppService from "./app-service"
 
-@Service('/')
-class Root extends AppService {
-  @Get('/')
-  getHelloWorld() {
-    return { message: 'Hello World' }
+@Service('/user')
+class User extends AppService {
+  @Get()
+  getProfile() {
+    return {
+      name: 'Andrii',
+      age : 28,
+    }
   }
 
-  @Post('/')
-  postHelloWorld(params) {
-    return params
+  @Post()
+  @StatusCode(c.CREATED)
+  createProfile(data) {
+    return data
+  }
+
+  @Put('/{userId}')
+  updateProfile({ pathParams }) {
+    const { userId } = pathParams
+
+    return userId
+  }
+
+  @Delete('/{userId}')
+  deleteProfile({ pathParams }) {
+    const { userId } = pathParams
+
+    return userId
   }
 }
 
-export default Root
+export default User

@@ -12,7 +12,7 @@ export default class Url {
     this.pattern = pattern
     this.strForRegExp = pattern
     this.pathParamsMap = {}
-    this.#regExp = !pattern && /^$/
+    this.#regExp = !pattern && /^($|\?.+)/
   }
 
   getRegExp() {

@@ -1,4 +1,4 @@
-import { StatusCode as c } from './codes'
+import { HttpCode as c } from './codes'
 import { ServiceError } from './errors'
 
 export default AppService => async (req, res) => {

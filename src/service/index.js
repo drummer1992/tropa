@@ -1,5 +1,5 @@
 import { EndpointsByServiceMap, getServiceMethod, isProperlyService } from './___meta-methods___'
-import { StatusCode as c } from '../codes'
+import { HttpCode as c } from '../codes'
 import { ServiceError } from '../errors'
 
 export default class BaseService {
