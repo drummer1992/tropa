@@ -1,8 +1,7 @@
 import http from 'http'
 import path from 'path'
 import AppService from "./services/app-service"
-import initServices from "../lib/init-services"
-import initRouting from '../'
+import { initRouting, initServices } from '../'
 
 const PORT = 3000
 

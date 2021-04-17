@@ -1,6 +1,5 @@
-import BaseService from "../../lib/base-service"
+import { BaseService, ApiPrefix } from "../.."
 import { ErrorHandler } from "./decorators/error-handler"
-import { ApiPrefix } from "../../lib/decorators"
 
 @ApiPrefix('/api/v2')
 export default class AppService extends BaseService {
