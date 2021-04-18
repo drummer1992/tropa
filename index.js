@@ -22,5 +22,6 @@ class Routing {
 module.exports = {
   Routing,
   BaseService,
+  ...require('./lib/errors'),
   ...require('./lib/codes'),
 }
