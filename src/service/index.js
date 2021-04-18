@@ -1,6 +1,7 @@
 import { EndpointsByServiceMap, getServiceMethod, isProperlyService } from './___meta-methods___'
 import { HttpCode as c } from '../codes'
 import { ServiceError } from '../errors'
+import { ErrorHandler } from '../decorators/error-handler'
 
 export default class BaseService {
   constructor(req, res) {
@@ -41,6 +42,7 @@ export default class BaseService {
     }
   }
 
+  @ErrorHandler
   execute() {
     const serviceMethod = getServiceMethod(this)
 

@@ -1,9 +1,8 @@
 import { Get, Post, Put, Service, Delete, StatusCode } from '../../decorators'
-import { HttpCode as c } from '../..'
-import AppService from './app-service'
+import { BaseService, HttpCode as c } from '../..'
 
 @Service('/user')
-class User extends AppService {
+class User extends BaseService {
   @Get()
   getProfile() {
     return {

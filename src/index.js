@@ -1,16 +1,17 @@
 import { HttpCode as c } from './codes'
 import { ServiceError } from './errors'
 import { withCors } from './decorators/legacy/cors'
+import BaseService from './service'
 
-export default (AppService, options) => {
-  const corsEnabled = options.cors
+export default ({ Service: ApiService, corsEnabled }) => {
+  const RootService = ApiService || BaseService
 
   const requestListener = async (req, res) => {
     let response
     let statusCode
     let headers
 
-    const Service = AppService.getCurrentService(req.url)
+    const Service = RootService.getCurrentService(req.url)
 
     if (Service) {
       // noinspection JSValidateTypes
