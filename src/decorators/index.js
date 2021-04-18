@@ -1,7 +1,7 @@
-import { addEndpoint, getApiPrefix, setApiPrefix, setServiceRegExp } from './service/___meta-methods___'
-import { isObject } from './utils/object'
-import Url from './utils/url'
-import bodyParser from './utils/body-parser'
+import { addEndpoint, getApiPrefix, setApiPrefix, setServiceRegExp } from '../service/___meta-methods___'
+import { isObject } from '../utils/object'
+import Url from '../utils/url'
+import bodyParser from '../utils/body-parser'
 
 export function Service(name) {
   return function(Clazz) {

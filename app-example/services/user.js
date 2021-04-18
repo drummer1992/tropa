@@ -1,6 +1,6 @@
 import { Get, Post, Put, Service, Delete, StatusCode } from '../../decorators'
 import { HttpCode as c } from '../..'
-import AppService from "./app-service"
+import AppService from './app-service'
 
 @Service('/user')
 class User extends AppService {

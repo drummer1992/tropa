@@ -3,18 +3,19 @@ const loadServices = require('./lib/service/load').default
 const getRequestListener = require('./lib').default
 
 class Routing {
-  constructor(Service) {
+  constructor(Service, { cors }) {
     if (!Service) {
       throw new Error('App service is not provided')
     }
 
     this.Service = Service
+    this.options = { cors }
   }
 
   async init(pathToServices) {
     await loadServices(pathToServices)
 
-    return getRequestListener(this.Service)
+    return getRequestListener(this.Service, this.options)
   }
 }
 
