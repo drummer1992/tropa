@@ -5,8 +5,8 @@ import { ErrorHandler } from '../decorators/error-handler'
 
 export default class BaseService {
   constructor(req, res) {
-    this._req = req
-    this._res = res
+    this.req = req
+    this.res = res
 
     this.request = {
       url        : req.url,
