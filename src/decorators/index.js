@@ -56,7 +56,7 @@ function Endpoint(method, pathOrOptions) {
       this.request.queryParams = url.parseQueryParams(this.request.url)
 
       if (options.parseBody) {
-        this.request.body = await bodyParser(this.req)
+        this.request.body = await this.constructor.parseBody(this.req)
       }
 
       return endpoint.call(this, {

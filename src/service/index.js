@@ -2,6 +2,7 @@ import { EndpointsByServiceMap, getServiceMethod, isProperlyService } from './__
 import { HttpCode as c } from '../codes'
 import { ServiceError } from '../errors'
 import { ErrorHandler } from '../decorators/error-handler'
+import bodyParser from '../utils/body-parser'
 
 export default class BaseService {
   constructor(req, res) {
@@ -29,6 +30,10 @@ export default class BaseService {
         return Service
       }
     }
+  }
+
+  static parseBody(req) {
+    return bodyParser(req)
   }
 
   setStatusCode(code) {
