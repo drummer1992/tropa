@@ -1,27 +1,21 @@
-import { addEndpoint, getApiPrefix, setApiPrefix, setServiceRegExp } from '../service/___meta-methods___'
-import { isObject } from '../utils/object'
-import Url from '../utils/url'
+import {addEndpoint, setControllerRegExp, getApiPrefix} from '../controller/___private___'
+import {isObject} from '../utils/object'
+import URLParser from '../utils/url'
 import bodyParser from '../utils/body-parser'
 
-export function Service(name) {
-  return function(Clazz) {
-    setServiceRegExp(Clazz, new RegExp(`^${getApiPrefix()}${name === '/' ? '' : name}`))
-  }
-}
+export function Controller(name) {
+  return function (Clazz) {
+    setControllerRegExp(Clazz, new RegExp(`^${getApiPrefix()}${name === '/' ? '' : name}`))
 
-export function ApiPrefix(prefix) {
-  setApiPrefix(prefix)
-
-  return function(Clazz) {
     return Clazz
   }
 }
 
 export function StatusCode(code) {
-  return function(instance, serviceMethod, descriptor) {
+  return function (instance, methodName, descriptor) {
     const endpoint = descriptor.value
 
-    descriptor.value = async function(...args) {
+    descriptor.value = async function (...args) {
       const response = await endpoint.apply(this, args)
 
       this.setStatusCode(code)
@@ -35,33 +29,32 @@ export function StatusCode(code) {
 
 const resolveOptions = pathOrOptions => isObject(pathOrOptions)
   ? pathOrOptions
-  : { path: pathOrOptions, parseBody: true }
+  : {path: pathOrOptions, parseBody: true}
 
 function Endpoint(method, pathOrOptions) {
   const options = resolveOptions(pathOrOptions)
 
-  const url = new Url(options.path)
+  const urlParser = new URLParser(options.path)
 
-  return function (instance, serviceMethod, descriptor) {
+  return function (instance, methodName, descriptor) {
     const endpoint = descriptor.value
 
     addEndpoint(instance.constructor, {
       method,
-      serviceMethod,
-      regExp: url.getRegExp(),
+      methodName,
+      regExp: urlParser.getRegExp(),
     })
 
     descriptor.value = async function () {
-      this.request.pathParams = url.parsePathParams(this.request.url)
-      this.request.queryParams = url.parseQueryParams(this.request.url)
+      const {pathParams, queryParams} = urlParser.parse(this.request.url)
 
-      if (options.parseBody) {
-        this.request.body = await this.constructor.parseBody(this.req)
-      }
+      this.request.pathParams = pathParams
+      this.request.queryParams = queryParams
+      this.request.body = options.parseBody ? await bodyParser(this.request.raw) : null
 
       return endpoint.call(this, {
-        body       : this.request.body,
-        pathParams : this.request.pathParams,
+        body: this.request.body,
+        pathParams: this.request.pathParams,
         queryParams: this.request.queryParams,
       })
     }

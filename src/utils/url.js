@@ -1,57 +1,58 @@
 import querystring from 'querystring'
 
-export default class Url {
-  /**
-   *
-   * @type {RegExp}
-   */
+const DEFAULT_URL_REGEXP = /^($|\?.+)/
+
+const parsePathParams = (url, regExp, paramsKeys) => {
+  const parsed = regExp.exec(url)
+
+  const pathParams = {}
+
+  if (parsed) {
+    const [, ...parsedParams] = parsed
+
+    paramsKeys.forEach((param, i) => {
+      pathParams[param] = parsedParams[i]
+    })
+  }
+
+  return pathParams
+}
+
+const parseQueryParams = url => {
+  const [, query] = url.split('?')
+
+  return querystring.parse(query)
+}
+
+export default class URLParser {
   #regExp = null
-  #paramsChecker = /{([^}{]+)}/g
+  #paramsKeys = []
 
   constructor(pattern) {
-    this.pattern = pattern
-    this.strForRegExp = pattern
-    this.pathParamsMap = {}
-    this.#regExp = !pattern && /^($|\?.+)/
+    const PATH_PARAMS_REGEXP = /{([^}{]+)}/g
+
+    let analysed
+    let regExpStr = pattern
+
+    while (analysed = PATH_PARAMS_REGEXP.exec(pattern)) {
+      const [paramInBrackets, param] = analysed
+
+      this.#paramsKeys.push(param)
+
+      regExpStr = regExpStr.replace(paramInBrackets, '([^\\?/]+)?')
+    }
+
+    this.#regExp = regExpStr ? new RegExp(`${regExpStr}(\\?|$)`) : DEFAULT_URL_REGEXP
   }
 
   getRegExp() {
-    if (this.#regExp) {
-      return this.#regExp
-    }
-
-    const pathParams = this.#paramsChecker.exec(this.pattern)
-
-    if (!pathParams) {
-      return new RegExp(`${this.strForRegExp}(\\?|$)`)
-    }
-
-    this.strForRegExp = this.strForRegExp.replace(pathParams[0], '([^\\?/]+)?')
-
-    this.pathParamsMap[pathParams[1]] = null
-
-    return this.getRegExp()
+    return this.#regExp
   }
 
-  parsePathParams(url) {
-    const regExp = this.getRegExp()
-
-    const parsed = regExp.exec(url)
-
-    if (parsed) {
-      const [, ...params] = parsed
-
-      Object.keys(this.pathParamsMap).forEach((param, i) => {
-        this.pathParamsMap[param] = params[i]
-      })
+  parse(url) {
+    return {
+      pathParams: parsePathParams(url, this.#regExp, this.#paramsKeys),
+      queryParams: parseQueryParams(url),
     }
-
-    return this.pathParamsMap
-  }
-
-  parseQueryParams(url) {
-    const [, query] = url.split('?')
-
-    return querystring.parse(query)
   }
 }

@@ -1,15 +1,14 @@
 {
-  "name": "decorated-routing",
+  "name": "tropa",
   "version": "1.0.0",
   "description": "Node.js routing based on decorators powered by Babel",
-  "main": "./index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "start": "babel-node --trace-warnings ./app-example",
     "build": "npx babel ./src --out-dir lib",
-    "lint": "eslint ./src ./app-example --ext .js --fix"
+    "lint": "eslint ./src --ext .js --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrii Varlamov",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.13.0",
