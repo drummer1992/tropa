@@ -1,60 +1,61 @@
-import {InternalError} from '../errors'
+import { InternalError } from '../errors'
 
-export const EndpointsByController = new Map()
-export const RegExpByController = new Map()
+export const EndpointsMap = new Map()
+export const ControllerPrefixesMap = new Map()
 
 let apiPrefix = ''
 
 export const setApiPrefix = value => apiPrefix = value
-export const getApiPrefix = () => apiPrefix
 
-export const findMethodName = (Controller, url, method) => {
-  const ENDPOINTS = EndpointsByController.get(Controller) || []
-  const regExp = RegExpByController.get(Controller)
+export const findEndpointName = (Controller, url, method) => {
+  const ENDPOINTS = EndpointsMap.get(Controller) || []
+  const prefixRegExp = ControllerPrefixesMap.get(Controller)
 
-  const path = url.replace(regExp, '')
+  const path = url.replace(prefixRegExp, '')
 
-  const endpoint = ENDPOINTS.find(endpoint => {
-    const sameMethod = endpoint.method === method
+  const byMethodAndUrl = endpoint => {
+    const sameMethod = endpoint.httpMethod === method
     const regexpIsMatched = endpoint.regExp.test(path)
 
     return sameMethod && regexpIsMatched
-  })
+  }
 
-  return endpoint?.methodName
+  const endpoint = ENDPOINTS.find(byMethodAndUrl)
+
+  return endpoint?.name
 }
 
-export const setControllerRegExp = (Controller, regExp) => {
-  if (RegExpByController.has(Controller)) {
+export const addControllerPrefixRegExp = (Controller, prefix) => {
+  if (ControllerPrefixesMap.has(Controller)) {
     throw new InternalError('RegExp has already been set')
   }
 
-  RegExpByController.set(Controller, regExp)
+  ControllerPrefixesMap.set(Controller, new RegExp(`^${apiPrefix}${prefix}`))
 }
 
 export const addEndpoint = (Controller, endpoint) => {
-  if (!EndpointsByController.has(Controller)) {
-    EndpointsByController.set(Controller, [])
+  if (!EndpointsMap.has(Controller)) {
+    EndpointsMap.set(Controller, [])
   }
 
-  const endpoints = EndpointsByController.get(Controller)
+  const endpoints = EndpointsMap.get(Controller)
 
   endpoints.push(endpoint)
 }
 
-export const isProperlyController = (Controller, url) => {
-  const regExp = RegExpByController.get(Controller)
+export const urlMatches = (Controller, url) => {
+  const regExp = ControllerPrefixesMap.get(Controller)
 
   if (!regExp) {
-    throw new InternalError(`${this.name} controller doesn't have a pattern`)
+    throw new InternalError(`${Controller.name} controller doesn't have 'Prefix' decorator assigned`)
   }
 
   return new RegExp(regExp.source + '([^\\w]|$)').test(url)
 }
 
 export const getRelativeController = url => {
-  for (const Controller of EndpointsByController.keys()) {
-    if (isProperlyController(Controller, url)) {
+  for (const Controller of EndpointsMap.keys()) {
+    if (urlMatches(Controller, url)) {
       return Controller
     }
   }

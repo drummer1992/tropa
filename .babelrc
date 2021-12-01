@@ -29,6 +29,7 @@
       {
         "loose": true
       }
-    ]
+    ],
+    "babel-plugin-parameter-decorator"
   ]
 }

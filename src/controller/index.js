@@ -1,15 +1,15 @@
-import {findMethodName, getRelativeController} from './___private___'
-import {HttpCode as c} from '../codes'
-import {ControllerError} from '../errors'
-import Keys from "../symbols";
+import { findEndpointName, getRelativeController } from './___private___'
+import { HttpCode as c } from '../codes'
+import { ControllerError, NotFoundError } from '../errors'
+import Keys from '../symbols'
 
-export default class BaseController {
+export default class Controller {
   constructor(req, res) {
     this.request = {
       raw: req,
       url: req.url,
       method: req.method,
-      headers: {...req.headers},
+      headers: { ...req.headers },
       pathParams: null,
       queryParams: null,
       body: null,
@@ -25,26 +25,23 @@ export default class BaseController {
 
   static async [Keys.kExecute](req, res) {
     const RelativeController = getRelativeController(req.url) || this
-    const controller = new RelativeController(req, res)
 
-    const response = await controller[Keys.kExecute]()
+    const controller = await new RelativeController(req, res)[Keys.kExecute]()
 
-    // TODO: Implement serializers logic
-    controller.response.body = response && JSON.stringify(response)
-
-    return controller
+    res.writeHead(controller.response.statusCode, controller.response.headers)
+    res.end(JSON.stringify(controller.response.body))
   }
 
   async [Keys.kExecute]() {
-    const methodName = findMethodName(this.constructor, this.request.url, this.request.method)
+    const endpointName = findEndpointName(this.constructor, this.request.url, this.request.method)
 
-    if (!this[methodName]) {
-      this.setStatusCode(c.NOT_FOUND)
+    this.response.body = this[endpointName] ? await this[endpointName]() : new NotFoundError()
 
-      return new ControllerError(`${this.request.method} ${this.request.url}: Not Found`, c.NOT_FOUND)
+    if (this.response.body instanceof ControllerError) {
+      this.setStatusCode(this.response.body.statusCode)
     }
 
-    return this[methodName]()
+    return this
   }
 
   setStatusCode(code) {

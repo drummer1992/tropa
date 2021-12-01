@@ -1,10 +1,18 @@
+import { HttpCode as c } from './codes'
+
 export class ControllerError extends Error {
   constructor(message, statusCode) {
     super()
 
     this.statusCode = statusCode
     this.message = message
-    this.name = ControllerError.name
+    this.name = this.constructor.name
+  }
+}
+
+export class NotFoundError extends ControllerError {
+  constructor() {
+    super('Not Found', c.NOT_FOUND)
   }
 }
 

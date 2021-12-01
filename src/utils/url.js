@@ -34,7 +34,7 @@ export default class URLParser {
     let analysed
     let regExpStr = pattern
 
-    while (analysed = PATH_PARAMS_REGEXP.exec(pattern)) {
+    while ((analysed = PATH_PARAMS_REGEXP.exec(pattern))) {
       const [paramInBrackets, param] = analysed
 
       this.#paramsKeys.push(param)
