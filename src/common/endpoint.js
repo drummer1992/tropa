@@ -1,8 +1,8 @@
 import URLParser from '../utils/url'
 import bodyParser from '../utils/body-parser'
 import Keys from '../symbols'
-import * as meta from "./meta"
-import { getRouteArguments } from "./meta"
+import * as meta from './meta'
+import { getRouteArguments } from './meta'
 
 const composeArguments = (request, target, method) => {
   return getRouteArguments(target.constructor, method).map(meta => {

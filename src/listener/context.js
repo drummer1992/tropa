@@ -1,4 +1,4 @@
-import { HttpCode as c } from "../codes"
+import { HttpCode as c } from '../codes'
 
 export default class Context {
   constructor(req, res) {

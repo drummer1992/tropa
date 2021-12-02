@@ -1,7 +1,7 @@
 import Endpoint from './endpoint'
 import * as meta from './meta'
-import Keys from "../symbols"
-import { setControllerPrefix } from "./meta"
+import Keys from '../symbols'
+import { setControllerPrefix } from './meta'
 
 export function Controller(prefix) {
   return function (Clazz) {

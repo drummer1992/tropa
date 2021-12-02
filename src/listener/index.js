@@ -1,6 +1,6 @@
-import Context from "./context"
-import * as meta from "../common/meta"
-import { NotFoundError } from "../errors"
+import Context from './context'
+import * as meta from '../common/meta'
+import { NotFoundError } from '../errors'
 
 const execute = async (requestHandler, context) => {
   context.response.body = requestHandler
