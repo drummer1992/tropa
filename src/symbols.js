@@ -1,6 +1,5 @@
 const Keys = {
-  kExecute: Symbol('tropa.execute'),
-  kMeta: Symbol('tropa.meta'),
+  kContext: Symbol('tropa.context'),
 }
 
 export default Keys

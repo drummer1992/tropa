@@ -1,11 +1,11 @@
-import { addControllerPrefixRegExp } from '../controller/___private___'
 import Endpoint from './endpoint'
-import initMeta from './init-meta'
-import Keys from '../symbols'
+import * as meta from './meta'
+import Keys from "../symbols"
+import { setControllerPrefix } from "./meta"
 
-export function Prefix(prefix) {
+export function Controller(prefix) {
   return function (Clazz) {
-    addControllerPrefixRegExp(Clazz, prefix)
+    setControllerPrefix(Clazz, prefix)
 
     return Clazz
   }
@@ -18,7 +18,7 @@ export function StatusCode(code) {
     descriptor.value = async function (...args) {
       const response = await endpoint.apply(this, args)
 
-      this.setStatusCode(code)
+      this[Keys.kContext].setStatusCode(code)
 
       return response
     }
@@ -47,20 +47,22 @@ export function Delete(path) {
   return Endpoint('DELETE', path)
 }
 
-const registerArgumentsMeta = (type, attribute) => (target, property, index) => {
-  initMeta(target, property)
-
-  target[Keys.kMeta][property].arguments[index] = { type, attribute }
+const addArgumentMeta = (type, attribute) => (target, methodName, index) => {
+  meta.addArgumentMeta(target.constructor, methodName, {
+    index,
+    type,
+    attribute,
+  })
 }
 
 export function Body(attribute) {
-  return registerArgumentsMeta('body', attribute)
+  return addArgumentMeta('body', attribute)
 }
 
 export function Param(attribute) {
-  return registerArgumentsMeta('pathParams', attribute)
+  return addArgumentMeta('pathParams', attribute)
 }
 
 export function Query(attribute) {
-  return registerArgumentsMeta('queryParams', attribute)
+  return addArgumentMeta('queryParams', attribute)
 }

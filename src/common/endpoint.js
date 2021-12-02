@@ -1,12 +1,12 @@
-import { addEndpoint } from '../controller/___private___'
-import initMeta from './init-meta'
 import URLParser from '../utils/url'
 import bodyParser from '../utils/body-parser'
 import Keys from '../symbols'
+import * as meta from "./meta"
+import { getRouteArguments } from "./meta"
 
-const getArguments = (instance, target, property) => {
-  target[Keys.kMeta][property].arguments.map(meta => {
-    const data = instance.request[meta.type]
+const composeArguments = (request, target, method) => {
+  return getRouteArguments(target.constructor, method).map(meta => {
+    const data = request[meta.type]
 
     return meta.attribute ? data?.[meta.attribute] : data
   })
@@ -16,27 +16,24 @@ export default (httpMethod, path) => {
   // TODO: '/' root path is not working
   const urlParser = new URLParser(path)
 
-  return function (target, property, descriptor) {
-    initMeta(target, property)
-
+  return function (target, method, descriptor) {
     const endpoint = descriptor.value
 
-    addEndpoint(target.constructor, {
+    meta.addRouteMeta(target.constructor, method, {
       httpMethod,
-      name: property,
       regExp: urlParser.getRegExp(),
     })
 
     descriptor.value = async function () {
-      const { pathParams, queryParams } = urlParser.parse(this.request.url)
+      const { request } = this[Keys.kContext]
 
-      this.request.pathParams = pathParams
-      this.request.queryParams = queryParams
-      this.request.body = await bodyParser(this.request.raw)
+      const { pathParams, queryParams } = urlParser.parse(request.url)
 
-      const args = getArguments(this, target, property)
+      request.pathParams = pathParams
+      request.queryParams = queryParams
+      request.body = await bodyParser(request.raw)
 
-      return endpoint.apply(this, args)
+      return endpoint.apply(this, composeArguments(request, target, method))
     }
 
     return descriptor

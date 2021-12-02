@@ -1,9 +1,8 @@
-import Controller from './controller'
-import Keys from './symbols'
-import http from 'http'
-import { promisify } from 'util'
-import { setApiPrefix } from './controller/___private___'
+import * as meta from "./common/meta"
+import requestListener from './listener'
 import loadControllers from './load-controllers'
+import util from 'util'
+import http from 'http'
 
 /**
  * @param {Object} [options]
@@ -16,14 +15,12 @@ import loadControllers from './load-controllers'
 export default function tropa(options = {}) {
   const { serverOptions = {}, tropaOptions = {} } = options
 
-  const requestListener = (req, res) => Controller[Keys.kExecute](req, res)
-
   const server = http.createServer(serverOptions, requestListener)
 
-  const listen = promisify(server.listen)
+  const listen = util.promisify(server.listen)
 
   server.listen = async function () {
-    tropaOptions.apiPrefix && setApiPrefix(tropaOptions.apiPrefix)
+    tropaOptions.apiPrefix && meta.setApiPrefix(tropaOptions.apiPrefix)
     tropaOptions.controllers && await loadControllers(tropaOptions.controllers)
 
     return listen.apply(server, arguments)
