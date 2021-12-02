@@ -12,7 +12,7 @@ const execute = async (requestHandler, context) => {
   }
 }
 
-export default async function listener(request, response) {
+export default async function requestListener(request, response) {
   const context = new Context(request, response)
 
   const handler = meta.getRequestHandler(request.url, request.method)
