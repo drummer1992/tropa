@@ -50,11 +50,15 @@ const compilePattern = pattern => {
   }
 }
 
-export default class Url {
-  constructor(method, pattern) {
-    const compiled = compilePattern(pattern)
+const trimIfRoot = pattern => Url.isRoot(pattern)
+  ? Url.trim(pattern)
+  : pattern
 
-    this[Keys.kPattern] = pattern
+export default class Url {
+  constructor(method, pattern = '') {
+    const trimmed = trimIfRoot(pattern)
+    const compiled = compilePattern(trimmed)
+
     this[Keys.kMethod] = method
     this[Keys.kRegExp] = compiled.regExp
     this[Keys.kParams] = compiled.params
@@ -66,10 +70,6 @@ export default class Url {
 
   get method() {
     return this[Keys.kMethod]
-  }
-
-  get pattern() {
-    return this[Keys.kPattern]
   }
 
   static trim(url = '') {

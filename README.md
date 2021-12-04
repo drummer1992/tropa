@@ -1,3 +1,12 @@
+# Tropa
+
+Tropa is a routing library built using awesome [Babel](https://github.com/babel/babel) compiler,
+for a Node.js applications.
+
+# Attention!
+The `Tropa` is in the development stage, but no one is holding you back from trying it right now. 
+
+```js
 import {
   Get,
   Post,
@@ -67,3 +76,4 @@ export default class User {
     users = users.filter(user => user.id !== id)
   }
 }
+```

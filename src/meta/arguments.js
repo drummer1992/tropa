@@ -18,5 +18,6 @@ const processArgument = async (url, meta) => {
   return meta.attribute ? argument?.[meta.attribute] : argument
 }
 
-export const parseArguments = route =>
-  Promise.all(route.arguments.map(meta => processArgument(route.url, meta)))
+export const parseArguments = route => {
+  return Promise.all(route.arguments.map(meta => processArgument(route.url, meta)))
+}

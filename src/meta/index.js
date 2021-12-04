@@ -3,7 +3,6 @@ import ControllerMeta from './controller'
 import Hooks from '../hooks'
 import { internalAssert } from '../errors'
 import { appMeta, controllersMeta } from './storage'
-import { notFoundRoute } from './route'
 import { App } from './constants'
 
 export const findRoute = (url, method) => {
@@ -14,8 +13,6 @@ export const findRoute = (url, method) => {
       return controllerMeta.findRoute(url, method)
     }
   }
-
-  return notFoundRoute
 }
 
 export const setControllerPrefix = (Controller, prefix) => {
