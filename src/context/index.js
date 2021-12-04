@@ -3,27 +3,47 @@ import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
 import Keys from '../symbols'
 
+class Request {
+  constructor(req) {
+    this[Keys.kRequest] = req
+    this.id = randomCode(4)
+    this.url = req.url
+    this.method = req.method
+    this.headers = { ...req.headers }
+    this.params = undefined
+    this.query = undefined
+    this.body = undefined
+  }
+
+  get raw() {
+    return this[Keys.kRequest]
+  }
+}
+
+class Response {
+  constructor(res) {
+    this[Keys.kShouldReply] = true
+    this[Keys.kResponse] = res
+    this.statusCode = c.OK
+    this.headers = {}
+    this.body = undefined
+  }
+
+  get raw() {
+    this[Keys.kShouldReply] = false
+
+    return this[Keys.kResponse]
+  }
+
+  shouldReply() {
+    return this[Keys.kShouldReply]
+  }
+}
+
 export default class Context {
   constructor(req, res) {
-    this[Keys.kShouldReply] = true
-
-    this[Keys.kRequest] = {
-      raw    : req,
-      id     : randomCode(4),
-      url    : req.url,
-      method : req.method,
-      headers: { ...req.headers },
-      params : undefined,
-      query  : undefined,
-      body   : undefined,
-    }
-
-    this[Keys.kResponse] = {
-      raw       : res,
-      statusCode: c.OK,
-      headers   : {},
-      body      : undefined,
-    }
+    this[Keys.kRequest] = new Request(req)
+    this[Keys.kResponse] = new Response(res)
 
     asyncContextStorage.enterWith(this)
   }
@@ -33,8 +53,6 @@ export default class Context {
   }
 
   get response() {
-    this[Keys.kShouldReply] = true
-
     return this[Keys.kResponse]
   }
 
@@ -54,6 +72,6 @@ export default class Context {
   }
 
   shouldReply() {
-    return this[Keys.kShouldReply]
+    return this.response.shouldReply()
   }
 }
