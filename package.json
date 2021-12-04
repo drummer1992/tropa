@@ -2,7 +2,10 @@
   "name": "tropa",
   "version": "1.0.0",
   "description": "Node.js routing based on decorators powered by Babel",
-  "main": "lib/index.js",
+  "main": "index.js",
+  "exports": {
+    "./": "./lib"
+  },
   "scripts": {
     "build": "npx babel ./src --out-dir lib",
     "lint": "eslint ./src --ext .js --fix"
