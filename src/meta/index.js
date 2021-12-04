@@ -1,14 +1,14 @@
 import Url from '../utils/url'
 import ControllerMeta from './controller'
-import App from './constants'
+import { App } from './constants'
 
 const controllersMeta = new Map()
 
-export const getRequestHandler = (url, method) => {
-  const values = [...controllersMeta.values()]
+export const findRequestHandler = (url, method) => {
+  const values = Array.from(controllersMeta.values())
 
   for (const controllerMeta of values) {
-    const handler = controllerMeta.getHandler(url, method)
+    const handler = controllerMeta.findRequestHandler(url, method)
 
     if (handler) {
       return handler
@@ -49,4 +49,8 @@ export const addArgumentMeta = (Controller, method, { index, type, attribute }) 
   const methodMeta = controllerMeta.getRoute(method)
 
   methodMeta.addArgument(type, attribute, index)
+}
+
+export const registerControllerInterceptor = (Controller, Interceptor) => {
+  controllersMeta.get(Controller).setInterceptor(Interceptor)
 }

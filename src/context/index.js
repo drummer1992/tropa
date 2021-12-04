@@ -1,38 +1,45 @@
 import { HttpCode as c } from '../codes'
 import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
+import Keys from '../symbols'
 
 export default class Context {
   constructor(req, res) {
-    this.request = {
+    this[Keys.kShouldReply] = true
+
+    this[Keys.kRequest] = {
       raw    : req,
       id     : randomCode(4),
       url    : req.url,
       method : req.method,
       headers: { ...req.headers },
-      params : null,
-      query  : null,
-      body   : null,
+      params : undefined,
+      query  : undefined,
+      body   : undefined,
     }
 
-    this.response = {
+    this[Keys.kResponse] = {
       raw       : res,
       statusCode: c.OK,
       headers   : {},
-      body      : null,
+      body      : undefined,
     }
+
+    asyncContextStorage.enterWith(this)
+  }
+
+  get request() {
+    return this[Keys.kRequest]
+  }
+
+  get response() {
+    this[Keys.kShouldReply] = true
+
+    return this[Keys.kResponse]
   }
 
   static get() {
     return asyncContextStorage.getStore()
-  }
-
-  static create(req, res) {
-    const context = new this(req, res)
-
-    asyncContextStorage.enterWith(context)
-
-    return context
   }
 
   setStatusCode(code) {
@@ -44,5 +51,9 @@ export default class Context {
       ...this.response.headers,
       ...headers,
     }
+  }
+
+  shouldReply() {
+    return this[Keys.kShouldReply]
   }
 }

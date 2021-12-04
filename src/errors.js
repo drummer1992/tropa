@@ -24,3 +24,9 @@ export class InternalError extends Error {
     this.name = InternalError.name
   }
 }
+
+export const internalAssert = (condition, message) => {
+  if (!condition) {
+    throw new InternalError(message)
+  }
+}

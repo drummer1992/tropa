@@ -1,5 +1,11 @@
-const App = {
+export const App = {
   prefix: '',
 }
 
-export default App
+export const Argument = {
+  QUERY   : 'query',
+  PARAM  : 'param',
+  BODY    : 'body',
+  REQUEST : 'request',
+  RESPONSE: 'response',
+}

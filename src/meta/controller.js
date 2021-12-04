@@ -1,6 +1,8 @@
 import Url from '../utils/url'
-import App from './constants'
+import { App } from './constants'
 import MethodMeta from './method'
+import Interceptor from './interceptor'
+import { internalAssert } from '../errors'
 
 const composeRoutes = Controller => {
   const routes = {}
@@ -14,8 +16,15 @@ const composeRoutes = Controller => {
   return routes
 }
 
+const trimControllerPrefix = (url, regExp) => {
+  const withoutPrefix = url.replace(regExp, '')
+
+  return Url.isRoot(withoutPrefix) ? '' : withoutPrefix
+}
+
 export default class ControllerMeta {
   constructor(Controller) {
+    this.interceptor = new Interceptor()
     this.instance = new Controller()
     this.routes = composeRoutes(Controller)
   }
@@ -32,22 +41,20 @@ export default class ControllerMeta {
     return this.routes[method]
   }
 
-  getHandler(url, httpMethod) {
+  findRequestHandler(url, httpMethod) {
     if (!this.isSuitable(url)) return
 
-    const routeUrl = this.trimControllerPrefix(url)
+    const routeUrl = trimControllerPrefix(url, this.regExp)
 
     const method = this.methods.find(method => {
       return this.getRoute(method).isSuitable(routeUrl, httpMethod)
     })
 
-    return method && (() => this.instance[method]())
+    return method && (ctx => this.runRequestHandler(method, ctx))
   }
 
-  trimControllerPrefix(url) {
-    const withoutPrefix = url.replace(this.regExp, '')
-
-    return Url.isRoot(withoutPrefix) ? '' : withoutPrefix
+  runRequestHandler(method, ctx) {
+    return this.interceptor.intercept(ctx, () => this.instance[method]())
   }
 
   isSuitable(url) {
@@ -57,5 +64,12 @@ export default class ControllerMeta {
   setRegExp(prefix) {
     this.regExp = new RegExp(`^${App.prefix}${prefix}`)
     this.urlRegExp = new RegExp(`${this.regExp.source}([^\\w]|$)`)
+  }
+
+  setInterceptor(ControllerInterceptor) {
+    internalAssert(ControllerInterceptor.prototype instanceof Interceptor,
+      'interceptor should be subclass of Interceptor')
+
+    this.interceptor = new ControllerInterceptor()
   }
 }

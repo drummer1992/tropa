@@ -3,13 +3,14 @@ import bodyParser from '../utils/body-parser'
 import * as meta from '../meta'
 import { getRouteArguments } from '../meta'
 import Context from '../context'
+import { Argument as a } from '../meta/constants'
 
 const argumentsProviders = {
-  query   : (url, { request }) => url.parseQuery(request.url),
-  params  : (url, { request }) => url.parseParams(request.url),
-  body    : (url, { request }) => bodyParser(request.raw),
-  request : (url, { request }) => request.raw,
-  response: (url, { response }) => response.raw,
+  [a.QUERY]   : (url, { request }) => request.query = url.parseQuery(request.url),
+  [a.PARAM]   : (url, { request }) => request.params = url.parseParams(request.url),
+  [a.BODY]    : async (url, { request }) => request.body = await bodyParser(request.raw),
+  [a.REQUEST] : (url, { request }) => request.raw,
+  [a.RESPONSE]: (url, { response }) => response.raw,
 }
 
 const provideArgument = async (url, meta) => {
