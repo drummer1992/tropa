@@ -10,9 +10,8 @@ import {
   Body,
   Response,
   Headers,
-} from '../../src/common'
-import { HttpCode as c } from '../../src/codes'
-import { randomCode } from '../../src/utils/random'
+} from 'tropa/common'
+import { HttpCode as c } from 'tropa/codes'
 import { ApiError } from '../errors'
 
 let users = []
@@ -36,7 +35,7 @@ export default class User {
   @Code(c.CREATED)
   @Post()
   createProfile(@Body() body) {
-    const id = randomCode(36)
+    const id = Math.floor(Math.random() * 1e6)
 
     users.push({ id, ...(body) })
 

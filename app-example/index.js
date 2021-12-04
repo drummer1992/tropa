@@ -1,7 +1,7 @@
-import tropa from '../src'
+import tropa from 'tropa'
 import path from 'path'
 import * as http from 'http'
-import Hooks from '../src/hooks'
+import Hooks from 'tropa/hooks'
 import { ApiError } from './errors'
 
 const compact = (...args) => args.filter(Boolean)

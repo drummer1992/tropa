@@ -1,34 +1,17 @@
 {
   "extends": "eslint:recommended",
   "root": true,
-  "ignorePatterns": [
-    "**/*.hbs.js",
-    "**/*.ts"
-  ],
+  "ignorePatterns": ["/lib/*.js"],
   "env": {
     "es6": true,
     "node": true
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
     "node": true
   },
-  "globals": {
-    "User": true,
-    "Chat": true,
-    "ChatMessage": true,
-    "DayOff": true,
-    "Offer": true,
-    "Reaction": true,
-    "Role": true,
-    "assert": true,
-    "describe": true,
-    "it": true,
-    "before": true,
-    "after": true,
-    "faker": true
-  },
+  "globals": {},
   "rules": {
     "dot-notation": "error",
     "space-in-parens": "error",
