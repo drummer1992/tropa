@@ -1,4 +1,4 @@
-import * as meta from './common/meta'
+import * as meta from './meta'
 import requestListener from './listener'
 import loadControllers from './load-controllers'
 import util from 'util'

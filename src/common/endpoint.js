@@ -1,39 +1,40 @@
-import URLParser from '../utils/url'
+import Url from '../utils/url'
 import bodyParser from '../utils/body-parser'
-import Keys from '../symbols'
-import * as meta from './meta'
-import { getRouteArguments } from './meta'
+import * as meta from '../meta'
+import { getRouteArguments } from '../meta'
+import Context from '../context'
 
-const composeArguments = (request, target, method) => {
-  return getRouteArguments(target.constructor, method).map(meta => {
-    const data = request[meta.type]
-
-    return meta.attribute ? data?.[meta.attribute] : data
-  })
+const argumentsProviders = {
+  query   : (url, { request }) => url.parseQuery(request.url),
+  params  : (url, { request }) => url.parseParams(request.url),
+  body    : (url, { request }) => bodyParser(request.raw),
+  request : (url, { request }) => request.raw,
+  response: (url, { response }) => response.raw,
 }
 
-export default (httpMethod, path) => {
-  // TODO: '/' root path is not working
-  const urlParser = new URLParser(path)
+const provideArgument = async (url, meta) => {
+  const provide = argumentsProviders[meta.type]
+  const data = await provide(url, Context.get())
+
+  return meta.attribute ? data?.[meta.attribute] : data
+}
+
+const mapArguments = (url, target, method) => {
+  const argsMeta = getRouteArguments(target.constructor, method)
+
+  return Promise.all(argsMeta.map(meta => provideArgument(url, meta)))
+}
+
+export default (httpMethod, pattern) => {
+  const url = new Url(httpMethod, pattern)
 
   return function (target, method, descriptor) {
     const endpoint = descriptor.value
 
-    meta.addRouteMeta(target.constructor, method, {
-      httpMethod,
-      regExp: urlParser.getRegExp(),
-    })
+    meta.addRouteMeta(target.constructor, method, url)
 
     descriptor.value = async function () {
-      const { request } = this[Keys.kContext]
-
-      const { pathParams, queryParams } = urlParser.parse(request.url)
-
-      request.pathParams = pathParams
-      request.queryParams = queryParams
-      request.body = await bodyParser(request.raw)
-
-      return endpoint.apply(this, composeArguments(request, target, method))
+      return endpoint.apply(this, await mapArguments(url, target, method))
     }
 
     return descriptor

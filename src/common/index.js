@@ -1,11 +1,12 @@
 import Endpoint from './endpoint'
-import * as meta from './meta'
-import Keys from '../symbols'
-import { setControllerPrefix } from './meta'
+import * as meta from '../meta'
+import { setControllerPrefix } from '../meta'
+import Url from '../utils/url'
+import Context from '../context'
 
 export function Controller(prefix) {
   return function (Clazz) {
-    setControllerPrefix(Clazz, prefix)
+    setControllerPrefix(Clazz, Url.trim(prefix))
 
     return Clazz
   }
@@ -18,7 +19,7 @@ export function StatusCode(code) {
     descriptor.value = async function (...args) {
       const response = await endpoint.apply(this, args)
 
-      this[Keys.kContext].setStatusCode(code)
+      Context.get().setStatusCode(code)
 
       return response
     }
@@ -60,9 +61,17 @@ export function Body(attribute) {
 }
 
 export function Param(attribute) {
-  return addArgumentMeta('pathParams', attribute)
+  return addArgumentMeta('params', attribute)
 }
 
 export function Query(attribute) {
-  return addArgumentMeta('queryParams', attribute)
+  return addArgumentMeta('query', attribute)
+}
+
+export function Request() {
+  return addArgumentMeta('request')
+}
+
+export function Response() {
+  return addArgumentMeta('response')
 }

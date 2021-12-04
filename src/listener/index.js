@@ -1,24 +1,30 @@
-import Context from './context'
-import * as meta from '../common/meta'
+import Context from '../context'
+import * as meta from '../meta'
 import { NotFoundError } from '../errors'
 
-const execute = async (requestHandler, context) => {
-  context.response.body = requestHandler
-      ? await requestHandler(context)
-      : new NotFoundError()
+const reply = () => {
+  const ctx = Context.get()
 
-  if (context.response.body instanceof NotFoundError) {
-    context.setStatusCode(context.response.body.statusCode)
+  ctx.response.raw.writeHead(ctx.response.statusCode, ctx.response.headers)
+  ctx.response.raw.end(JSON.stringify(ctx.response.body))
+}
+
+const execute = async requestHandler => {
+  const ctx = Context.get()
+
+  ctx.response.body = requestHandler
+    ? await requestHandler()
+    : new NotFoundError()
+
+  if (ctx.response.body instanceof NotFoundError) {
+    ctx.setStatusCode(ctx.response.body.statusCode)
   }
 }
 
 export default async function requestListener(request, response) {
-  const context = new Context(request, response)
+  Context.create(request, response)
 
-  const handler = meta.getRequestHandler(request.url, request.method)
+  await execute(meta.getRequestHandler(request.url, request.method))
 
-  await execute(handler, context)
-
-  context.response.raw.writeHead(context.response.statusCode, context.response.headers)
-  context.response.raw.end(JSON.stringify(context.response.body))
+  reply()
 }

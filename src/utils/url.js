@@ -1,6 +1,5 @@
 import querystring from 'querystring'
-
-const DEFAULT_URL_REGEXP = /^($|\?.+)/
+import Keys from '../symbols'
 
 const parsePathParams = (url, regExp, paramsKeys) => {
   const parsed = regExp.exec(url)
@@ -24,35 +23,74 @@ const parseQueryParams = url => {
   return querystring.parse(query)
 }
 
-export default class URLParser {
-  #regExp = null
-  #paramsKeys = []
+const QUERY_PARAMS_STR_REGEXP = '$|\\?.+'
+const PATH_PARAM_STR_REGEXP = '([^\\?/]+)?'
+const ROOT_REGEXP = new RegExp(`^(${QUERY_PARAMS_STR_REGEXP})`)
 
-  constructor(pattern) {
-    const PATH_PARAMS_REGEXP = /{([^}{]+)}/g
+const compilePattern = pattern => {
+  const syntaxRegExp = /{([^}{]+)}/g
 
-    let analysed
-    let regExpStr = pattern
+  const params = []
 
-    while ((analysed = PATH_PARAMS_REGEXP.exec(pattern))) {
-      const [paramInBrackets, param] = analysed
+  let analysed, regExpStr = pattern
 
-      this.#paramsKeys.push(param)
+  while ((analysed = syntaxRegExp.exec(pattern))) {
+    const [paramInBrackets, param] = analysed
 
-      regExpStr = regExpStr.replace(paramInBrackets, '([^\\?/]+)?')
-    }
+    params.push(param)
 
-    this.#regExp = regExpStr ? new RegExp(`${regExpStr}(\\?|$)`) : DEFAULT_URL_REGEXP
+    regExpStr = regExpStr.replace(paramInBrackets, PATH_PARAM_STR_REGEXP)
   }
 
-  getRegExp() {
-    return this.#regExp
+  return {
+    params,
+    regExp: regExpStr
+      ? new RegExp(`${regExpStr}(${QUERY_PARAMS_STR_REGEXP})`)
+      : ROOT_REGEXP,
+  }
+}
+
+export default class Url {
+  constructor(method, pattern) {
+    const compiled = compilePattern(pattern)
+
+    this[Keys.kPattern] = pattern
+    this[Keys.kMethod] = method
+    this[Keys.kRegExp] = compiled.regExp
+    this[Keys.kParams] = compiled.params
   }
 
-  parse(url) {
-    return {
-      pathParams: parsePathParams(url, this.#regExp, this.#paramsKeys),
-      queryParams: parseQueryParams(url),
+  get regExp() {
+    return this[Keys.kRegExp]
+  }
+
+  get method() {
+    return this[Keys.kMethod]
+  }
+
+  get pattern() {
+    return this[Keys.kPattern]
+  }
+
+  static trim(url = '') {
+    const last = url[url.length - 1]
+
+    if (last === '/') {
+      return url.slice(0, -1)
     }
+
+    return url
+  }
+
+  static isRoot(url) {
+    return !url || (url === '/')
+  }
+
+  parseParams(url) {
+    return parsePathParams(url, this.regExp, this[Keys.kParams])
+  }
+
+  parseQuery(url) {
+    return parseQueryParams(url)
   }
 }
