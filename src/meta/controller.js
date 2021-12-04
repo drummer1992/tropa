@@ -24,6 +24,8 @@ const trimControllerPrefix = (url, regExp) => {
 export default class ControllerMeta {
   constructor(Controller) {
     this.instance = new Controller()
+    this.regExp = new RegExp(`^${appMeta.get(App.PREFIX)}`)
+    this.urlRegExp = new RegExp(`${this.regExp.source}([^\\w]|$)`)
     this.routes = composeRoutes(Controller, this)
   }
 
