@@ -4,6 +4,7 @@
   "description": "Node.js routing based on decorators powered by Babel",
   "main": "lib/index.js",
   "scripts": {
+    "start": "babel-node --trace-warnings ./app-example",
     "build": "npx babel ./src --out-dir lib",
     "lint": "eslint ./src --ext .js --fix"
   },
@@ -16,7 +17,6 @@
     "@babel/eslint-parser": "^7.13.8",
     "@babel/node": "^7.13.0",
     "@babel/plugin-proposal-decorators": "^7.13.5",
-    "@babel/plugin-proposal-private-methods": "^7.13.0",
     "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/preset-env": "^7.13.9",
     "@babel/register": "^7.13.8",
