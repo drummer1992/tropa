@@ -1,20 +1,31 @@
 import Context from '../context'
 import * as meta from '../meta'
-import { NotFoundError } from '../errors'
+import { parseArguments } from '../meta/arguments'
 
-export default async function requestListener(request, response) {
+export default async function listener(request, response) {
   const ctx = new Context(request, response)
-  const handler = meta.findRequestHandler(request.url, request.method)
 
-  if (handler) {
-    ctx.response.body = await handler(ctx)
-  } else {
-    ctx.response.body = new NotFoundError()
-    ctx.setStatusCode(ctx.response.body.statusCode)
-  }
+  const hooks = meta.getHooks()
 
-  if (ctx.shouldReply()) {
-    response.writeHead(ctx.response.statusCode, ctx.response.headers)
-    response.end(JSON.stringify(ctx.response.body))
-  }
+  await hooks.onRequest(ctx)
+
+  const route = meta.findRoute(ctx.request.url, ctx.request.method)
+
+  const args = await parseArguments(route)
+
+  await hooks.onHandler(ctx)
+
+  const { body, headers, statusCode } = await route.handler(...args)
+    .then(result => ({
+        statusCode: route.statusCode,
+        headers   : route.headers,
+        body      : result,
+      }),
+      async error => ({
+        body: await hooks.onError(error, ctx),
+      }))
+
+  ctx.response.end({ statusCode, headers, body })
+
+  await hooks.onResponse(ctx)
 }

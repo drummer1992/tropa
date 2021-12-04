@@ -1,28 +1,22 @@
 import Url from '../utils/url'
 import ControllerMeta from './controller'
+import Hooks from '../hooks'
+import { internalAssert } from '../errors'
+import { appMeta, controllersMeta } from './storage'
+import { notFoundRoute } from './route'
 import { App } from './constants'
 
-const controllersMeta = new Map()
+export const findRoute = (url, method) => {
+  const controllers = Array.from(controllersMeta.values())
 
-export const findRequestHandler = (url, method) => {
-  const values = Array.from(controllersMeta.values())
-
-  for (const controllerMeta of values) {
-    const handler = controllerMeta.findRequestHandler(url, method)
-
-    if (handler) {
-      return handler
+  for (const controllerMeta of controllers) {
+    if (controllerMeta.isSuitable(url)) {
+      return controllerMeta.findRoute(url, method)
     }
   }
+
+  return notFoundRoute
 }
-
-export const getRouteArguments = (Controller, method) => {
-  const controllerMeta = controllersMeta.get(Controller)
-
-  return controllerMeta.getRoute(method).arguments
-}
-
-export const setApiPrefix = prefix => App.prefix = Url.trim(prefix)
 
 export const setControllerPrefix = (Controller, prefix) => {
   const meta = controllersMeta.get(Controller)
@@ -42,6 +36,14 @@ export const addRouteMeta = (Controller, method, urlInstance) => {
   controllersMeta.get(Controller).addRoute(method, urlInstance)
 }
 
+export const setRouteStatusCode = (Controller, method, code) => {
+  controllersMeta.get(Controller).getRoute(method).setStatusCode(code)
+}
+
+export const setRouteHeaders = (Controller, method, headers) => {
+  controllersMeta.get(Controller).getRoute(method).setHeaders(headers)
+}
+
 export const addArgumentMeta = (Controller, method, { index, type, attribute }) => {
   initControllerMeta(Controller)
 
@@ -51,6 +53,13 @@ export const addArgumentMeta = (Controller, method, { index, type, attribute }) 
   methodMeta.addArgument(type, attribute, index)
 }
 
-export const registerControllerInterceptor = (Controller, Interceptor) => {
-  controllersMeta.get(Controller).setInterceptor(Interceptor)
+export const setApiPrefix = prefix => appMeta.set(App.PREFIX, Url.trim(prefix))
+
+export const setHooks = CustomHooks => {
+  internalAssert(CustomHooks.prototype instanceof Hooks,
+    'hooks should be subclass of Hooks')
+
+  appMeta.set(App.HOOKS, new CustomHooks())
 }
+
+export const getHooks = () => appMeta.get(App.HOOKS)

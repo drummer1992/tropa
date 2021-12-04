@@ -5,7 +5,7 @@ const Keys = {
   kPattern      : Symbol('tropa.url.pattern'),
   kRequest      : Symbol('tropa.context.request'),
   kResponse     : Symbol('tropa.context.response'),
-  kShouldReply  : Symbol('tropa.context.shouldReply'),
+  kHandovered  : Symbol('tropa.context.handovered'),
 }
 
 export default Keys

@@ -1,7 +1,8 @@
-import { HttpCode as c } from '../codes'
 import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
 import Keys from '../symbols'
+import { HttpCode as c } from '../codes'
+import { Header as h } from '../meta/constants'
 
 class Request {
   constructor(req) {
@@ -22,21 +23,36 @@ class Request {
 
 class Response {
   constructor(res) {
-    this[Keys.kShouldReply] = true
+    this[Keys.kHandovered] = false
     this[Keys.kResponse] = res
-    this.statusCode = c.OK
-    this.headers = {}
+    this.statusCode = undefined
+    this.headers = undefined
     this.body = undefined
   }
 
   get raw() {
-    this[Keys.kShouldReply] = false
+    this[Keys.kHandovered] = true
 
     return this[Keys.kResponse]
   }
 
-  shouldReply() {
-    return this[Keys.kShouldReply]
+  get handovered() {
+    return this[Keys.kHandovered]
+  }
+
+  end({ statusCode, headers, body } = {}) {
+    if (this.handovered) return
+
+    this.statusCode ??= statusCode
+    this.headers ??= headers
+    this.body ??= body
+
+    this.raw.writeHead(
+      this.statusCode || c.OK,
+      this.headers || { [h.Key.contentType]: h.Value.applicationJson },
+    )
+
+    this.raw.end(JSON.stringify(this.body))
   }
 }
 
@@ -58,20 +74,5 @@ export default class Context {
 
   static get() {
     return asyncContextStorage.getStore()
-  }
-
-  setStatusCode(code) {
-    this.response.statusCode = code
-  }
-
-  setHeaders(headers) {
-    this.response.headers = {
-      ...this.response.headers,
-      ...headers,
-    }
-  }
-
-  shouldReply() {
-    return this.response.shouldReply()
   }
 }
