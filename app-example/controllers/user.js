@@ -10,8 +10,8 @@ import {
   Body,
   Response,
   Headers,
-} from 'tropa/common'
-import { HttpCode as c } from 'tropa/codes'
+} from 'tropa/lib/common'
+import { HttpCode as c } from 'tropa/lib/codes'
 import { ApiError } from '../errors'
 
 let users = []
