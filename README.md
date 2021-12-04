@@ -1,7 +1,6 @@
 # Tropa
 
-Tropa is a routing library built using awesome [Babel](https://github.com/babel/babel) compiler,
-for a Node.js applications.
+Tropa is a routing library for a Node.js applications, built using awesome [Babel](https://github.com/babel/babel) compiler.
 
 # Attention!
 The `Tropa` is in the development stage, but no one is holding you back from trying it right now. 
