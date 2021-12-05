@@ -1,12 +1,9 @@
-import * as meta from './meta'
+import Hooks from './hooks'
 import listener from './listener'
 import loadControllers from './load-controllers'
 
-const tropa = {
-  listener,
-  loadControllers,
-  setApiPrefix: meta.setApiPrefix,
-  useHooks    : meta.setHooks,
-}
 
-export default tropa
+export * from './common'
+export { Hooks, listener, loadControllers }
+export { HttpCode } from './codes'
+export { setHooks, setApiPrefix } from './meta'
