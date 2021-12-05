@@ -1,6 +1,8 @@
 import * as meta from '../meta'
 import Url from '../utils/url'
 import { Argument as a } from '../meta/constants'
+import Context from '../context'
+import { getPrototypeKeys } from '../utils/object'
 
 export const Prefix = prefix => Controller => {
   meta.setControllerPrefix(Controller, Url.trim(prefix))
@@ -34,4 +36,28 @@ export const Query = attribute => addArgumentMeta(a.QUERY, attribute)
 export const Request = () => addArgumentMeta(a.REQUEST)
 export const Response = () => addArgumentMeta(a.RESPONSE)
 
-export { Intercept } from './decorators'
+const registerInterceptor = (interceptor, descriptor) => {
+  const method = descriptor.value
+
+  descriptor.value = function () {
+    return interceptor(Context.get(), () => method.apply(this, arguments))
+  }
+
+  return descriptor
+}
+
+export const Intercept = interceptor => (...args) => {
+  const calledOnController = args.length === 1
+
+  if (calledOnController) {
+    const Controller = args[0]
+
+    return getPrototypeKeys(Controller).forEach(property => {
+      const descriptor = Object.getOwnPropertyDescriptor(Controller.prototype, property)
+
+      Object.defineProperty(Controller.prototype, property, registerInterceptor(interceptor, descriptor))
+    })
+  }
+
+  return registerInterceptor(interceptor, args[args.length - 1])
+}
