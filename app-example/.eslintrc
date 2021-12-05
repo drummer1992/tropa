@@ -10,5 +10,8 @@
   "parserOptions": {
     "ecmaVersion": 2020,
     "node": true
+  },
+  "rules": {
+    "no-unused-vars": "off"
   }
 }
