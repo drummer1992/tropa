@@ -10,7 +10,7 @@ You can easily create your `tropa` app using [create-tropa](https://www.npmjs.co
 npm init tropa my-app
 ```
 
-# How `tropa` roting looks like
+## How roting looks like
 
 ```js
 import { Get, listener } from 'tropa';
