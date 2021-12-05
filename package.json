@@ -2,7 +2,8 @@
   "name": "tropa",
   "version": "1.0.0",
   "description": "Node.js routing based on decorators powered by Babel",
-  "main": "index.js",
+  "type": "module",
+  "main": "./lib/index.js",
   "exports": {
     "./": "./lib"
   },
