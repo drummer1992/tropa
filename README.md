@@ -12,8 +12,11 @@ npm init tropa my-app
 
 ## How `tropa` routing looks like
 
+Here is more complex [app example](https://github.com/drummer1992/tropa/tree/master/app-example)
+
 ```js
-import { Get, listener } from 'tropa';
+import * as tropa from 'tropa'
+import { Get } from 'tropa'
 import http from 'http'
 
 class Root {
@@ -23,7 +26,7 @@ class Root {
   }
 }
 
-http.createServer(listener).listen(3000, () => {
+http.createServer(tropa.listener).listen(3000, () => {
   console.log('Server started on port 3000')
 })
 ```
