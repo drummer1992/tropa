@@ -1,9 +1,9 @@
 import Url from '../utils/url'
 import ControllerMeta from './controller'
 import Hooks from '../hooks'
-import { internalAssert } from '../errors'
 import { appMeta, controllersMeta } from './storage'
 import { App } from './constants'
+import assert from 'assert'
 
 export const findRoute = (url, method) => {
   const controllers = Array.from(controllersMeta.values())
@@ -53,7 +53,7 @@ export const addArgumentMeta = (Controller, method, { index, type, attribute }) 
 export const setApiPrefix = prefix => appMeta.set(App.PREFIX, Url.trim(prefix))
 
 export const setHooks = CustomHooks => {
-  internalAssert(CustomHooks.prototype instanceof Hooks,
+  assert(CustomHooks.prototype instanceof Hooks,
     'hooks should be subclass of Hooks')
 
   appMeta.set(App.HOOKS, new CustomHooks())

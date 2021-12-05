@@ -1,6 +1,5 @@
 import fs from 'fs/promises'
 import path from 'path'
-import { InternalError } from './errors'
 
 const getModulesPath = async pathToDir => {
   const dir = await fs.readdir(path.resolve(__dirname, pathToDir))
@@ -17,7 +16,7 @@ export default async function loadControllers(pathToDir) {
 
   controllers.forEach((Controller, i) => {
     if (!Controller.default?.name) {
-      throw new InternalError(`Default export not found for module: ${modulesPath[i]}`)
+      throw new Error(`Default export not found for module: ${modulesPath[i]}`)
     }
 
     console.log(`${Controller.default.name} controller successfully initialized`)

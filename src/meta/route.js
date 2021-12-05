@@ -1,5 +1,5 @@
 /* eslint-disable require-await */
-import { NotFoundError } from '../errors'
+import { NOT_FOUND_ERROR } from '../errors'
 import { HttpCode as c } from '../codes'
 import { Header as h } from './constants'
 
@@ -39,7 +39,10 @@ export default class RouteMeta {
 
 const notFoundRoute = new RouteMeta()
 
-notFoundRoute.setHandler(async () => new NotFoundError())
+notFoundRoute.setHandler(async () => {
+  throw NOT_FOUND_ERROR
+})
+
 notFoundRoute.setStatusCode(c.NOT_FOUND)
 notFoundRoute.setHeaders({ [h.Key.contentType]: h.Value.applicationJson })
 
