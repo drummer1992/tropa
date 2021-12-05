@@ -7,6 +7,14 @@
     "build": "npx babel ./src --out-dir lib",
     "lint": "eslint ./src --ext .js --fix"
   },
+  "homepage": "https://github.com/drummer1992/tropa",
+  "bugs": {
+    "url": "https://github.com/drummer1992/tropa/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drummer1992/tropa.git"
+  },
   "keywords": [],
   "author": "Andrii Varlamov",
   "license": "ISC",
