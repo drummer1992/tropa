@@ -1,7 +1,7 @@
 {
   "name": "tropa",
-  "version": "1.0.2",
-  "description": "Node.js routing based on decorators powered by Babel",
+  "version": "1.0.3",
+  "description": "Node.js routing library powered by Babel",
   "main": "./lib/index.js",
   "scripts": {
     "build": "npx babel ./src --out-dir lib",
