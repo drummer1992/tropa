@@ -1,4 +1,4 @@
-import Hooks from 'tropa/lib/hooks'
+import Hooks from 'tropa'
 import { ApiError } from './errors'
 
 const compact = (...args) => args.filter(Boolean)

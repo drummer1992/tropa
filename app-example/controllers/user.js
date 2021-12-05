@@ -1,3 +1,4 @@
+import { ApiError } from '../errors'
 import {
   Get,
   Post,
@@ -10,9 +11,8 @@ import {
   Body,
   Response,
   Headers,
-} from 'tropa/lib/common'
-import { HttpCode as c } from 'tropa/lib/codes'
-import { ApiError } from '../errors'
+  HttpCode as c,
+} from 'tropa'
 
 let users = []
 

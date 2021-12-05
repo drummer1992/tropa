@@ -4,7 +4,7 @@ import * as http from 'http'
 import AppHooks from './hooks'
 
 async function bootstrap() {
-  tropa.useHooks(AppHooks)
+  tropa.setHooks(AppHooks)
   tropa.setApiPrefix('/api/v1')
 
   await tropa.loadControllers(path.resolve(__dirname, './controllers'))
