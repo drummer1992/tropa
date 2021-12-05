@@ -3,9 +3,12 @@ import listener from './listener'
 import loadControllers from './load-controllers'
 import { setHooks, setApiPrefix } from './meta'
 
-const tropa = { listener, loadControllers, setHooks, setApiPrefix }
-
-export default tropa
+export {
+  listener,
+  loadControllers,
+  setHooks,
+  setApiPrefix,
+}
 
 export {
   Prefix,

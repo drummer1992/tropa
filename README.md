@@ -8,7 +8,7 @@ The `Tropa` is in the development stage, but no one is holding you back from try
 # Example
  
 ```js
-import tropa, { Get } from 'tropa';
+import { Get, listener } from 'tropa';
 import http from 'http'
 
 class Root {
@@ -18,7 +18,7 @@ class Root {
   }
 }
 
-http.createServer(tropa.listener).listen(3000, () => {
+http.createServer(listener).listen(3000, () => {
   console.log('Server started on port 3000')
 })
 ```
