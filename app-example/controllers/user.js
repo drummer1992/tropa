@@ -12,17 +12,32 @@ import {
   Response,
   Headers,
   HttpCode as c,
+  Intercept,
 } from 'tropa'
 
 let users = []
 
+const interceptEvery = (ctx, call) => {
+  console.log('user class interceptor')
+
+  return call()
+}
+
+const interceptOne = (ctx, call) => {
+  console.log('user method interceptor')
+
+  return call()
+}
+
 @Prefix('/user')
+@Intercept(interceptEvery)
 export default class User {
   @Get()
   getProfiles() {
     return users
   }
 
+  @Intercept(interceptOne)
   @Get('/{id}')
   getProfileById(@Response() res, @Param('id') id) {
     const user = users.find(user => user.id === id)

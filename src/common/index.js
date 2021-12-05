@@ -34,4 +34,4 @@ export const Query = attribute => addArgumentMeta(a.QUERY, attribute)
 export const Request = () => addArgumentMeta(a.REQUEST)
 export const Response = () => addArgumentMeta(a.RESPONSE)
 
-export { Intercept } from './intercept'
+export { Intercept } from './decorators'

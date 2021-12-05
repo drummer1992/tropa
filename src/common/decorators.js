@@ -5,7 +5,7 @@ const registerInterceptor = (interceptor, descriptor) => {
   const method = descriptor.value
 
   descriptor.value = function () {
-    return interceptor(Context.get(), method.bind(this, arguments))
+    return interceptor(Context.get(), () => method.apply(this, arguments))
   }
 
   return descriptor
