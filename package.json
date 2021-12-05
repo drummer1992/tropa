@@ -15,7 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/drummer1992/tropa.git"
   },
-  "keywords": [],
+  "keywords": [
+    "router",
+    "api"
+  ],
   "author": "Andrii Varlamov",
   "license": "ISC",
   "devDependencies": {
