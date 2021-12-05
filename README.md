@@ -8,8 +8,7 @@ The `Tropa` is in the development stage, but no one is holding you back from try
 # Example
  
 ```js
-import * as tropa from 'tropa';
-import { Get } from 'tropa';
+import tropa, { Get } from 'tropa';
 import http from 'http'
 
 class Root {
