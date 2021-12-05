@@ -10,11 +10,11 @@ export default class Hooks {
 
   }
 
-  onHandler(ctx) {
+  beforeHandler(ctx) {
 
   }
 
-  onError(err, ctx) {
+  errorHandler(err, ctx) {
     if (!(err instanceof TropaError)) {
       console.error(err.stack)
 

@@ -49,7 +49,7 @@ export default class User {
 
     const user = users.find(user => user.id === id)
 
-    if (!user) throw new ApiError('user not found')
+    if (!user) throw new ApiError('User not found')
 
     Object.assign(user, changes)
   }

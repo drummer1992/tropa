@@ -5,6 +5,7 @@ const Keys = {
   kRequest   : Symbol('tropa.context.request'),
   kResponse  : Symbol('tropa.context.response'),
   kHandovered: Symbol('tropa.context.handovered'),
+  KInstance  : Symbol('tropa.meta.controller.instance'),
 }
 
 export default Keys

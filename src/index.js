@@ -24,6 +24,7 @@ export {
   Query,
   Request,
   Response,
+  Intercept,
 } from './common'
 
 export { Hooks }

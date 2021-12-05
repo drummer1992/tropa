@@ -1,8 +1,6 @@
 import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
 import Keys from '../symbols'
-import { HttpCode as c } from '../codes'
-import { Header as h } from '../meta/constants'
 
 class Request {
   constructor(req) {
@@ -38,21 +36,6 @@ class Response {
 
   get handovered() {
     return this[Keys.kHandovered]
-  }
-
-  end({ statusCode, headers, body } = {}) {
-    if (this.handovered) return
-
-    this.statusCode ??= statusCode
-    this.headers ??= headers
-    this.body ??= body
-
-    this.raw.writeHead(
-      this.statusCode || c.OK,
-      this.headers || { [h.Key.contentType]: h.Value.applicationJson },
-    )
-
-    this.raw.end(JSON.stringify(this.body))
   }
 }
 

@@ -1,5 +1,4 @@
 import { Hooks } from 'tropa'
-import { ApiError } from './errors'
 
 const compact = (...args) => args.filter(Boolean)
 const serialize = value => JSON.stringify(value)
@@ -9,29 +8,17 @@ export default class AppHooks extends Hooks {
     ctx.start = new Date()
   }
 
-  onHandler(ctx) {
+  beforeHandler(ctx) {
     console.log(...compact(
       ctx.start.toISOString(),
       `[${ctx.request.id}]`,
       '[REQ]',
       ctx.request.method,
       ctx.request.url,
-      ctx.request.param && 'PARAM: ' + serialize(ctx.request.param),
+      ctx.request.params && 'PARAM: ' + serialize(ctx.request.params),
       ctx.request.query && 'QUERY: ' + serialize(ctx.request.query),
       ctx.request.body && 'BODY: ' + serialize(ctx.request.body),
     ))
-  }
-
-  onError(err, ctx) {
-    if (!(err instanceof ApiError)) {
-      console.error(err)
-
-      err = new ApiError('Internal Server Error', 500)
-    }
-
-    ctx.response.statusCode = err.statusCode
-
-    return err
   }
 
   onResponse(ctx) {

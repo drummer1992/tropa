@@ -2,15 +2,13 @@ import Url from '../utils/url'
 import { App } from './constants'
 import RouteMeta from './route'
 import { appMeta } from './storage'
+import { getPrototypeKeys } from '../utils/object'
+import Keys from '../symbols'
 
 const composeRoutes = Controller => {
   const routes = {}
 
-  Object.getOwnPropertyNames(Controller.prototype).forEach(property => {
-    if (property !== 'constructor') {
-      routes[property] = new RouteMeta()
-    }
-  })
+  getPrototypeKeys(Controller).forEach(property => routes[property] = new RouteMeta())
 
   return routes
 }
@@ -23,14 +21,22 @@ const trimControllerPrefix = (url, regExp) => {
 
 export default class ControllerMeta {
   constructor(Controller) {
-    this.instance = new Controller()
+    this.Class = Controller
     this.regExp = new RegExp(`^${appMeta.get(App.PREFIX)}`)
     this.urlRegExp = new RegExp(`${this.regExp.source}([^\\w]|$)`)
-    this.routes = composeRoutes(Controller, this)
+    this.routes = composeRoutes(Controller)
   }
 
   get methods() {
     return Object.keys(this.routes)
+  }
+
+  get instance() {
+    if (!this[Keys.KInstance]) {
+      this[Keys.KInstance] = new this.Class()
+    }
+
+    return this[Keys.KInstance]
   }
 
   findRoute(url, httpMethod) {
