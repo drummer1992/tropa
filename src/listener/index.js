@@ -18,13 +18,12 @@ export default async function listener(request, response) {
 
   const { body, headers, statusCode } = await route.handler(...args)
     .then(result => ({
-        statusCode: route.statusCode,
-        headers   : route.headers,
-        body      : result,
-      }),
-      async error => ({
-        body: await hooks.onError(error, ctx),
-      }))
+      statusCode: route.statusCode,
+      headers   : route.headers,
+      body      : result,
+    }), async error => ({
+      body: await hooks.onError(error, ctx),
+    }))
 
   ctx.response.end({ statusCode, headers, body })
 
