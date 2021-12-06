@@ -19,6 +19,6 @@ export default async function loadControllers(pathToDir) {
       throw new Error(`Default export not found for module: ${modulesPath[i]}`)
     }
 
-    console.log(`${Controller.default.name} controller successfully initialized`)
+    console.log(`Controller ${Controller.default.name} successfully initialized`)
   })
 }

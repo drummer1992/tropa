@@ -1,6 +1,7 @@
 import Url from '../utils/url'
 import ControllerMeta from './controller'
 import Hooks from '../hooks'
+import { notFoundRoute } from './route'
 import { appMeta, controllersMeta } from './storage'
 import { App } from './constants'
 import assert from 'assert'
@@ -10,9 +11,15 @@ export const findRoute = (url, method) => {
 
   for (const controllerMeta of controllers) {
     if (controllerMeta.isSuitable(url)) {
-      return controllerMeta.findRoute(url, method)
+      const route = controllerMeta.findRoute(url, method)
+
+      if (route) {
+        return route
+      }
     }
   }
+
+  return notFoundRoute
 }
 
 export const setControllerPrefix = (Controller, prefix) => {

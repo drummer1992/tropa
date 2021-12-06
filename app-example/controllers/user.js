@@ -13,7 +13,7 @@ import {
   Headers,
   HttpCode as c,
   Intercept,
-} from 'tropa'
+} from '../../lib'
 
 let users = []
 
@@ -31,8 +31,8 @@ const interceptOne = (ctx, call) => {
 
 @Prefix('/user')
 @Intercept(interceptEvery)
-export default class User {
-  @Get()
+export default class UserController {
+  @Get('/')
   getProfiles() {
     return users
   }

@@ -1,4 +1,4 @@
-import * as tropa from 'tropa'
+import * as tropa from '../lib'
 import path from 'path'
 import * as http from 'http'
 import AppHooks from './hooks'

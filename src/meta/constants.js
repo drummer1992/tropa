@@ -10,13 +10,3 @@ export const Argument = {
   REQUEST : 'request',
   RESPONSE: 'response',
 }
-
-export const Header = {
-  Key  : {
-    contentType: 'Content-Type',
-  },
-  Value: {
-    applicationJson: 'application/json',
-    textPlain      : 'text/plain',
-  },
-}

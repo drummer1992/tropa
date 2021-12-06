@@ -1,4 +1,4 @@
-import { Hooks } from 'tropa'
+import { Hooks } from '../lib'
 
 const compact = (...args) => args.filter(Boolean)
 const serialize = value => JSON.stringify(value)
