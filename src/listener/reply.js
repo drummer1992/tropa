@@ -6,11 +6,7 @@ const repliers = [
   {
     criteria: instanceOf(Readable),
     reply   : response => {
-      response.raw.writeHead(response.statusCode, {
-        'Content-Type': 'application/octet-stream',
-        ...(response.headers),
-      })
-
+      response.raw.writeHead(response.statusCode, response.headers)
       response.body.pipe(response.raw)
     },
   },

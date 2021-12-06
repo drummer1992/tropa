@@ -1,6 +1,5 @@
 import Context from '../context'
 import * as meta from '../meta'
-import { parseArguments } from '../meta/arguments'
 import { HttpCode as c } from '../codes'
 import reply from './reply'
 
@@ -14,7 +13,7 @@ export default async (req, res) => {
 
     const route = meta.findRoute(req.url, req.method)
 
-    const args = await parseArguments(route)
+    const args = await route.parseArguments()
 
     await hooks.beforeHandler(ctx)
 

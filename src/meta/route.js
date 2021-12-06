@@ -1,5 +1,22 @@
 /* eslint-disable require-await */
 import { NOT_FOUND_ERROR } from '../errors'
+import { Argument as a } from './constants'
+import bodyParser from '../utils/body-parser'
+import Context from '../context'
+
+const argumentProviders = {
+  [a.BODY]    : async (url, { request }) => request.body = await bodyParser(request.raw),
+  [a.QUERY]   : (url, { request }) => request.query = url.parseQuery(request.url),
+  [a.PARAM]   : (url, { request }) => request.params = url.parseParams(request.url),
+  [a.REQUEST] : (url, { request }) => request.raw,
+  [a.RESPONSE]: (url, { response }) => response.raw,
+}
+
+const processArgument = async (url, argMeta, ctx) => {
+  const argument = await argumentProviders[argMeta.type](url, ctx)
+
+  return argMeta.attribute ? argument?.[argMeta.attribute] : argument
+}
 
 export default class RouteMeta {
   constructor() {
@@ -8,6 +25,12 @@ export default class RouteMeta {
     this.statusCode = undefined
     this.headers = undefined
     this.arguments = []
+  }
+
+  parseArguments() {
+    const ctx = Context.get()
+
+    return Promise.all(this.arguments.map(argMeta => processArgument(this.url, argMeta, ctx)))
   }
 
   addArgument(type, attribute, index) {

@@ -23,7 +23,6 @@ export default class ControllerMeta {
   constructor(Controller) {
     this.Class = Controller
     this.regExp = new RegExp(`^${appMeta.get(App.PREFIX)}`)
-    this.urlRegExp = new RegExp(`${this.regExp.source}([^\\w]|$)`)
     this.routes = composeRoutes(Controller)
   }
 
@@ -50,15 +49,12 @@ export default class ControllerMeta {
   }
 
   addRoute(method, urlInstance) {
-    const handler = async (...args) => await this.instance[method](...args)
-
     this.routes[method].setUrl(urlInstance)
-    this.routes[method].setHandler(handler)
+    this.routes[method].setHandler(async (...args) => await this.instance[method](...args))
   }
 
   setRegExp(prefix) {
     this.regExp = new RegExp(`^${appMeta.get(App.PREFIX)}${prefix}`)
-    this.urlRegExp = new RegExp(`${this.regExp.source}([^\\w]|$)`)
   }
 
   getRoute(method) {
@@ -66,6 +62,6 @@ export default class ControllerMeta {
   }
 
   isSuitable(url) {
-    return this.urlRegExp.test(url)
+    return this.regExp.test(url)
   }
 }
