@@ -35,4 +35,8 @@ export default class AppHooks extends Hooks {
 
     console.log(`[${ctx.request.id}]`, `Processing finished. ${ms} ms`)
   }
+
+  errorHandler(err) {
+    return err
+  }
 }

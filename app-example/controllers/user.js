@@ -50,7 +50,7 @@ export default class UserController {
   @Code(c.CREATED)
   @Post()
   createProfile(@Body() body) {
-    const id = Math.floor(Math.random() * 1e6)
+    const id = Math.floor(Math.random() * 1e6).toString()
 
     users.push({ id, ...(body) })
 
