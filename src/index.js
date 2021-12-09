@@ -3,6 +3,7 @@ import { HttpCode } from './constants'
 import listener from './listener'
 import loadControllers from './load-controllers'
 import { setHooks, setApiPrefix } from './meta'
+import { getContext } from './context'
 
 export {
   HttpCode,
@@ -11,6 +12,7 @@ export {
   loadControllers,
   setHooks,
   setApiPrefix,
+  getContext,
 }
 
 export {

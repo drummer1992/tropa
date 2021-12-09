@@ -58,8 +58,6 @@ export default class Context {
   get response() {
     return this[k.kResponse]
   }
-
-  static get() {
-    return asyncContextStorage.getStore()
-  }
 }
+
+export const getContext = () => asyncContextStorage.getStore()

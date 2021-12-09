@@ -1,11 +1,11 @@
-import Context from '../context'
+import { getContext } from '../context'
 import { getPrototypeKeys } from '../utils/object'
 
 const registerInterceptor = (interceptor, descriptor) => {
   const method = descriptor.value
 
   descriptor.value = function () {
-    return interceptor(Context.get(), method.bind(this, ...arguments))
+    return interceptor(getContext(), method.bind(this, ...arguments))
   }
 
   return descriptor
