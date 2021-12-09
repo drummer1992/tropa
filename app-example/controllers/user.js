@@ -46,8 +46,8 @@ export default class UserController {
   getProfileById(@Response() res, @Param('userId') userId, @Param('profileId') profileId) {
     const user = users.find(user => user.id === userId && user.profile?.id === profileId)
 
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(user ? user : { message: 'User not found' }))
+    res.raw.setHeader('Content-Type', 'application/json')
+    res.raw.end(JSON.stringify(user ? user : { message: 'User not found' }))
   }
 
   @Interceptor(authInterceptor)

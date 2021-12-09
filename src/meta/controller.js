@@ -3,7 +3,7 @@ import { App } from './constants'
 import RouteMeta from './route'
 import { appMeta } from './storage'
 import { getPrototypeKeys } from '../utils/object'
-import Keys from '../symbols'
+import k from '../symbols'
 
 const composeRoutes = Controller => {
   const routes = {}
@@ -31,11 +31,11 @@ export default class ControllerMeta {
   }
 
   get instance() {
-    if (!this[Keys.KInstance]) {
-      this[Keys.KInstance] = new this.Class()
+    if (!this[k.KInstance]) {
+      this[k.KInstance] = new this.Class()
     }
 
-    return this[Keys.KInstance]
+    return this[k.KInstance]
   }
 
   findRoute(url, httpMethod) {
@@ -49,8 +49,10 @@ export default class ControllerMeta {
   }
 
   addRoute(method, urlInstance) {
-    this.routes[method].setUrl(urlInstance)
-    this.routes[method].setHandler(async (...args) => await this.instance[method](...args))
+    const handler = async (...args) => await this.instance[method](...args)
+
+    this.getRoute(method).setUrl(urlInstance)
+    this.getRoute(method).setHandler(handler)
   }
 
   setRegExp(prefix) {

@@ -1,58 +1,62 @@
 import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
-import Keys from '../symbols'
+import k from '../symbols'
 
 class Request {
   constructor(req) {
-    this[Keys.kRequest] = req
-    this.id = randomCode(4)
+    this[k.kRequest] = req
+    this[k.kRequestId] = randomCode(4)
     this.url = req.url
     this.method = req.method
-    this.headers = { ...req.headers }
+    this.headers = req.headers
     this.params = undefined
     this.query = undefined
     this.body = undefined
   }
 
   get raw() {
-    return this[Keys.kRequest]
+    return this[k.kRequest]
+  }
+
+  get id() {
+    return this[k.kRequestId]
   }
 }
 
 class Response {
   constructor(res) {
-    this[Keys.kHandovered] = false
-    this[Keys.kResponse] = res
+    this[k.kHandovered] = false
+    this[k.kResponse] = res
     this.statusCode = undefined
     this.headers = undefined
     this.body = undefined
   }
 
   get raw() {
-    this[Keys.kHandovered] = true
+    this[k.kHandovered] = true
 
-    return this[Keys.kResponse]
+    return this[k.kResponse]
   }
 
   get handovered() {
-    return this[Keys.kHandovered]
+    return this[k.kHandovered]
   }
 }
 
 export default class Context {
   constructor(req, res) {
-    this[Keys.kRequest] = new Request(req)
-    this[Keys.kResponse] = new Response(res)
+    this[k.kRequest] = new Request(req)
+    this[k.kResponse] = new Response(res)
 
     asyncContextStorage.enterWith(this)
   }
 
   get request() {
-    return this[Keys.kRequest]
+    return this[k.kRequest]
   }
 
   get response() {
-    return this[Keys.kResponse]
+    return this[k.kResponse]
   }
 
   static get() {

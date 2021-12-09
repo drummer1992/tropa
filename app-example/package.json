@@ -22,7 +22,5 @@
     "eslint": "^7.21.0",
     "nodemon": "^2.0.15"
   },
-  "dependencies": {
-    "tropa": "https://github.com/drummer1992/tropa"
-  }
+  "dependencies": {}
 }

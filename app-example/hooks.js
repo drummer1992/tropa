@@ -37,6 +37,8 @@ export default class AppHooks extends Hooks {
   }
 
   errorHandler(err) {
+    console.error(err.stack)
+
     return err
   }
 }

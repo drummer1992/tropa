@@ -1,11 +1,8 @@
 const Keys = {
-  kRegExp      : Symbol('tropa.url.regExp'),
-  kParamsRegExp: Symbol('tropa.url.paramsRegExp'),
-  kParams      : Symbol('tropa.url.params'),
-  kMethod      : Symbol('tropa.url.method'),
-  kRequest     : Symbol('tropa.context.request'),
-  kResponse    : Symbol('tropa.context.response'),
-  kHandovered  : Symbol('tropa.context.handovered'),
+  kRequest     : Symbol('tropa.request'),
+  kRequestId   : Symbol('tropa.request.id'),
+  kResponse    : Symbol('tropa.response'),
+  kHandovered  : Symbol('tropa.response.handovered'),
   KInstance    : Symbol('tropa.meta.controller.instance'),
 }
 
