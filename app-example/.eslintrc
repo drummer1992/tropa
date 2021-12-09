@@ -1,7 +1,6 @@
 {
   "extends": "eslint:recommended",
   "root": true,
-  "ignorePatterns": ["/lib/*.js"],
   "env": {
     "es6": true,
     "node": true

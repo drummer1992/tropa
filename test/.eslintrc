@@ -1,22 +1,8 @@
 {
-  "extends": "eslint:recommended",
-  "root": true,
   "env": {
-    "es6": true,
-    "node": true
-  },
-  "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "node": true
+    "mocha": true
   },
   "globals": {
-    "describe": true,
-    "it": true,
-    "after": true,
-    "afterEach": true,
-    "before": true,
-    "beforeEach": true,
     "assert": true
   }
 }
