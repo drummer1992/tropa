@@ -1,9 +1,12 @@
 import Hooks from './hooks'
+import { HttpCode } from './constants'
 import listener from './listener'
 import loadControllers from './load-controllers'
 import { setHooks, setApiPrefix } from './meta'
 
 export {
+  HttpCode,
+  Hooks,
   listener,
   loadControllers,
   setHooks,
@@ -27,6 +30,3 @@ export {
   Interceptor,
   Context,
 } from './common'
-
-export { Hooks }
-export { HttpCode } from './codes'

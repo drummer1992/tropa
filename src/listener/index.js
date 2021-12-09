@@ -1,6 +1,6 @@
 import Context from '../context'
 import * as meta from '../meta'
-import { HttpCode as c } from '../codes'
+import { HttpCode as c } from '../constants'
 import reply from './reply'
 
 export default async (req, res) => {

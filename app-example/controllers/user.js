@@ -11,9 +11,9 @@ import {
   Body,
   Response,
   Headers,
-  HttpCode as c,
   Interceptor,
   Context,
+  HttpCode as c,
 } from '../../lib'
 
 let users = []

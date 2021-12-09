@@ -1,4 +1,4 @@
-import { HttpCode as c } from './codes'
+import { HttpCode as c } from './constants'
 
 export class TropaError extends Error {
   constructor(message, statusCode) {
