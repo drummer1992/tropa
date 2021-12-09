@@ -1,6 +1,8 @@
 .DS_Store
+.mocharc.js
 node_modules
 yarn.lock
 package-lock.json
 app-example
 src
+test

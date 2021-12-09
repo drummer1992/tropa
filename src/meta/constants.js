@@ -9,4 +9,5 @@ export const Argument = {
   BODY    : 'body',
   REQUEST : 'request',
   RESPONSE: 'response',
+  CONTEXT : 'context',
 }

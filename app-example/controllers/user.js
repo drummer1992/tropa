@@ -12,40 +12,45 @@ import {
   Response,
   Headers,
   HttpCode as c,
-  Intercept,
+  Interceptor,
+  Context,
 } from '../../lib'
 
 let users = []
 
-const interceptEvery = (ctx, call) => {
-  console.log('user class interceptor')
+const loggerInterceptor = (ctx, call) => {
+  console.log('user class interceptor', 'handler', call.name)
 
   return call()
 }
 
-const interceptOne = (ctx, call) => {
-  console.log('user method interceptor')
+const authInterceptor = (ctx, call) => {
+  const { token } = ctx.request.headers
+
+  if (token !== 'tropa') {
+    throw new ApiError('Authorization failed')
+  }
 
   return call()
 }
 
 @Prefix('/user')
-@Intercept(interceptEvery)
+@Interceptor(loggerInterceptor)
 export default class UserController {
   @Get('/')
   getProfiles() {
     return users
   }
 
-  @Intercept(interceptOne)
-  @Get('/{id}')
-  getProfileById(@Response() res, @Param('id') id) {
-    const user = users.find(user => user.id === id)
+  @Get('/{userId}/profile/{profileId}')
+  getProfileById(@Response() res, @Param('userId') userId, @Param('profileId') profileId) {
+    const user = users.find(user => user.id === userId && user.profile?.id === profileId)
 
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(user ? user : { message: 'User not found' }))
   }
 
+  @Interceptor(authInterceptor)
   @Headers({ 'Content-Type': 'text/plain' })
   @Code(c.CREATED)
   @Post()
@@ -79,5 +84,10 @@ export default class UserController {
     if (!id) throw new ApiError('id is required')
 
     users = users.filter(user => user.id !== id)
+  }
+
+  @Get('/ctx')
+  getCtx(@Context() ctx) {
+    return ctx
   }
 }

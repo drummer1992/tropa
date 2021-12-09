@@ -24,10 +24,9 @@ const parseQueryParams = url => {
 }
 
 const QUERY_PARAMS_STR_REGEXP = '$|\\?.+'
-const PATH_PARAM_STR_REGEXP = '([^\\?/]+)?'
-const ROOT_REGEXP = new RegExp(`^(${QUERY_PARAMS_STR_REGEXP})`)
+const PATH_PARAM_STR_REGEXP = '([^\\?/]+)'
 
-const compilePattern = pattern => {
+const compilePattern = (pattern = '') => {
   const syntaxRegExp = /{([^}{]+)}/g
 
   const params = []
@@ -44,24 +43,19 @@ const compilePattern = pattern => {
 
   return {
     params,
-    regExp: regExpStr
-      ? new RegExp(`${regExpStr}(${QUERY_PARAMS_STR_REGEXP})`)
-      : ROOT_REGEXP,
+    paramsRegExp: new RegExp(`${regExpStr}(${QUERY_PARAMS_STR_REGEXP})`),
+    regExp      : new RegExp(`^${regExpStr}(${QUERY_PARAMS_STR_REGEXP})`),
   }
 }
 
-const trimIfRoot = pattern => Url.isRoot(pattern)
-  ? Url.trim(pattern)
-  : pattern
-
 export default class Url {
-  constructor(method, pattern = '') {
-    const trimmed = trimIfRoot(pattern)
-    const compiled = compilePattern(trimmed)
+  constructor(method, pattern = '/') {
+    const { params, regExp, paramsRegExp } = compilePattern(pattern)
 
     this[Keys.kMethod] = method
-    this[Keys.kRegExp] = compiled.regExp
-    this[Keys.kParams] = compiled.params
+    this[Keys.kRegExp] = regExp
+    this[Keys.kParamsRegExp] = paramsRegExp
+    this[Keys.kParams] = params
   }
 
   get regExp() {
@@ -83,11 +77,13 @@ export default class Url {
   }
 
   static isRoot(url) {
-    return !url || (url === '/')
+    return !url
+      || (url === '/')
+      || url.startsWith('?')
   }
 
   parseParams(url) {
-    return parsePathParams(url, this.regExp, this[Keys.kParams])
+    return parsePathParams(url, this[Keys.kParamsRegExp], this[Keys.kParams])
   }
 
   parseQuery(url) {

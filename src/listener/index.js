@@ -13,14 +13,16 @@ export default async (req, res) => {
 
     const route = meta.findRoute(req.url, req.method)
 
-    const args = await route.parseArguments()
+    await hooks.beforeParsing(ctx)
+
+    const args = await route.parseArguments(ctx)
 
     await hooks.beforeHandler(ctx)
 
     ctx.response.body ??= await route.handler(...args)
     ctx.response.statusCode ??= route.statusCode
   } catch (err) {
-    ctx.response.body ??= await hooks.errorHandler(err, ctx)
+    ctx.response.body = await hooks.errorHandler(err, ctx)
     ctx.response.statusCode ??= err.statusCode
   }
 

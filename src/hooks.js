@@ -10,6 +10,10 @@ export default class Hooks {
 
   }
 
+  beforeParsing(ctx) {
+
+  }
+
   beforeHandler(ctx) {
 
   }

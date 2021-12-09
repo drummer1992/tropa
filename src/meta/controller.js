@@ -13,10 +13,10 @@ const composeRoutes = Controller => {
   return routes
 }
 
-const trimControllerPrefix = (url, regExp) => {
+const trimUrl = (url, regExp) => {
   const withoutPrefix = url.replace(regExp, '')
 
-  return Url.isRoot(withoutPrefix) ? '' : withoutPrefix
+  return Url.isRoot(withoutPrefix) ? '/' : Url.trim(withoutPrefix)
 }
 
 export default class ControllerMeta {
@@ -39,7 +39,7 @@ export default class ControllerMeta {
   }
 
   findRoute(url, httpMethod) {
-    const routeUrl = trimControllerPrefix(url, this.regExp)
+    const routeUrl = trimUrl(url, this.regExp)
 
     const byUrl = method => this.getRoute(method).isSuitable(routeUrl, httpMethod)
 

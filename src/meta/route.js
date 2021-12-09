@@ -2,14 +2,14 @@
 import { NOT_FOUND_ERROR } from '../errors'
 import { Argument as a } from './constants'
 import bodyParser from '../utils/body-parser'
-import Context from '../context'
 
 const argumentProviders = {
-  [a.BODY]    : async (url, { request }) => request.body = await bodyParser(request.raw),
-  [a.QUERY]   : (url, { request }) => request.query = url.parseQuery(request.url),
-  [a.PARAM]   : (url, { request }) => request.params = url.parseParams(request.url),
+  [a.BODY]    : async (url, { request }) => request.body ??= await bodyParser(request.raw),
+  [a.QUERY]   : (url, { request }) => request.query ??= url.parseQuery(request.url),
+  [a.PARAM]   : (url, { request }) => request.params ??= url.parseParams(request.url),
   [a.REQUEST] : (url, { request }) => request.raw,
   [a.RESPONSE]: (url, { response }) => response.raw,
+  [a.CONTEXT] : (url, ctx) => ctx,
 }
 
 const processArgument = async (url, argMeta, ctx) => {
@@ -27,9 +27,7 @@ export default class RouteMeta {
     this.arguments = []
   }
 
-  parseArguments() {
-    const ctx = Context.get()
-
+  parseArguments(ctx) {
     return Promise.all(this.arguments.map(argMeta => processArgument(this.url, argMeta, ctx)))
   }
 

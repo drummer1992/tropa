@@ -1,7 +1,7 @@
 import * as meta from '../meta'
 import Url from '../utils/url'
 import { Argument as a } from '../meta/constants'
-import Context from '../context'
+import TropaContext from '../context'
 import { getPrototypeKeys } from '../utils/object'
 
 export const Prefix = prefix => Controller => {
@@ -35,18 +35,19 @@ export const Param = attribute => addArgumentMeta(a.PARAM, attribute)
 export const Query = attribute => addArgumentMeta(a.QUERY, attribute)
 export const Request = () => addArgumentMeta(a.REQUEST)
 export const Response = () => addArgumentMeta(a.RESPONSE)
+export const Context = () => addArgumentMeta(a.CONTEXT)
 
 const registerInterceptor = (interceptor, descriptor) => {
   const method = descriptor.value
 
   descriptor.value = function () {
-    return interceptor(Context.get(), () => method.apply(this, arguments))
+    return interceptor(TropaContext.get(), method.bind(this, ...arguments))
   }
 
   return descriptor
 }
 
-export const Intercept = interceptor => (...args) => {
+export const Interceptor = interceptor => (...args) => {
   const calledOnController = args.length === 1
 
   if (calledOnController) {

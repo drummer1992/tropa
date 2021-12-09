@@ -2,6 +2,16 @@ import { Readable } from 'stream'
 import { instanceOf, isArray, isFunction, isNumber, isObject, isString } from '../utils/predicates'
 import { and, not, or } from '../utils/function'
 
+const contentTypeApplicationJson = content => ({
+  'Content-Type'  : 'application/json',
+  'Content-Length': Buffer.byteLength(content),
+})
+
+const contentTypeTextPlain = content => ({
+  'Content-Type'  : 'text/plain',
+  'Content-Length': Buffer.byteLength(content),
+})
+
 const repliers = [
   {
     criteria: instanceOf(Readable),
@@ -19,8 +29,7 @@ const repliers = [
       const serialized = JSON.stringify(response.body)
 
       response.raw.writeHead(response.statusCode, {
-        'Content-Type'  : 'application/json',
-        'Content-Length': Buffer.byteLength(serialized),
+        ...contentTypeApplicationJson(serialized),
         ...(response.headers),
       })
 
@@ -31,8 +40,7 @@ const repliers = [
     criteria: isString,
     reply   : response => {
       response.raw.writeHead(response.statusCode, {
-        'Content-Type'  : 'text/plain',
-        'Content-Length': Buffer.byteLength(response.body),
+        ...contentTypeTextPlain(response.body),
         ...(response.headers),
       })
 
@@ -42,11 +50,10 @@ const repliers = [
   {
     criteria: and(isNumber, not(isNaN)),
     reply   : response => {
-      const serialized = response.body.toString()
+      const serialized = String(response.body)
 
       response.raw.writeHead(response.statusCode, {
-        'Content-Type'  : 'text/plain',
-        'Content-Length': Buffer.byteLength(serialized),
+        ...contentTypeTextPlain(serialized),
         ...(response.headers),
       })
 
