@@ -4,5 +4,6 @@ export class ApiError extends Error {
 
     this.message = message
     this.statusCode = statusCode
+    this.name = this.constructor.name
   }
 }

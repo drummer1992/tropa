@@ -11,32 +11,40 @@ import {
   Body,
   Response,
   Headers,
-  Interceptor,
   Context,
+  Decorate,
   HttpCode as c,
+  getContext,
 } from '../../lib'
 
 let users = []
 
-const loggerInterceptor = (ctx, call) => {
-  console.log('user class interceptor', 'handler', call.name)
-
-  return call()
-}
-
-const authInterceptor = (ctx, call) => {
-  const { token } = ctx.request.headers
+const auth = fn => (...args) => {
+  const { token } = getContext().request.headers
 
   if (token !== 'tropa') {
     throw new ApiError('Authorization failed')
   }
 
-  return call()
+  return fn(...args)
 }
 
+const logger = fn => (...args) => {
+  console.log('user logger')
+
+  return fn(...args)
+}
+
+const welcome = fn => (...args) => {
+  console.log('welcome')
+
+  return fn(...args)
+}
+
+@Decorate(auth, logger)
 @Prefix('/user')
-@Interceptor(loggerInterceptor)
 export default class UserController {
+  @Decorate(welcome)
   @Get('/')
   getProfiles() {
     return users
@@ -50,7 +58,6 @@ export default class UserController {
     res.raw.end(JSON.stringify(user ? user : { message: 'User not found' }))
   }
 
-  @Interceptor(authInterceptor)
   @Headers({ 'Content-Type': 'text/plain' })
   @Code(c.CREATED)
   @Post()

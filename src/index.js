@@ -1,5 +1,6 @@
 import Hooks from './hooks'
 import { HttpCode } from './constants'
+import { NotFoundError } from './errors'
 import listener from './listener'
 import loadControllers from './load-controllers'
 import { setHooks, setApiPrefix } from './meta'
@@ -8,6 +9,7 @@ import { getContext } from './context'
 export {
   HttpCode,
   Hooks,
+  NotFoundError,
   listener,
   loadControllers,
   setHooks,
@@ -29,6 +31,6 @@ export {
   Query,
   Request,
   Response,
-  Interceptor,
+  Decorate,
   Context,
 } from './common'

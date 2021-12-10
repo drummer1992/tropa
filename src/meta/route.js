@@ -1,4 +1,4 @@
-import { NOT_FOUND_ERROR } from '../errors'
+import { NotFoundError } from '../errors'
 import { Argument as a } from './constants'
 import bodyParser from '../utils/body-parser'
 
@@ -59,7 +59,7 @@ const notFoundRoute = new RouteMeta()
 
 /* eslint-disable require-await */
 notFoundRoute.setHandler(async () => {
-  throw NOT_FOUND_ERROR
+  throw new NotFoundError()
 })
 
 export { notFoundRoute }

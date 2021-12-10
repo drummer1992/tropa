@@ -1,6 +1,6 @@
 import { HttpCode as c } from './constants'
 
-export class TropaError extends Error {
+class TropaError extends Error {
   constructor(message, statusCode) {
     super()
 
@@ -21,9 +21,3 @@ export class InternalServerError extends TropaError {
     super('Internal Server Error', c.INTERNAL_SERVER_ERROR)
   }
 }
-
-export const NOT_FOUND_ERROR = new NotFoundError()
-export const INTERNAL_SERVER_ERROR = new InternalServerError()
-
-Object.freeze(NOT_FOUND_ERROR)
-Object.freeze(INTERNAL_SERVER_ERROR)

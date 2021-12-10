@@ -1,7 +1,7 @@
 import * as meta from '../meta'
 import Url from '../utils/url'
 import { Argument as a } from '../meta/constants'
-import Interceptor from './interceptor'
+import Decorate from './decorate'
 
 export const Prefix = prefix => Controller => meta.setControllerPrefix(Controller, Url.trim(prefix))
 export const Code = code => (target, property) => meta.setRouteStatusCode(target.constructor, property, code)
@@ -30,4 +30,4 @@ export const Request = () => addArgumentMeta(a.REQUEST)
 export const Response = () => addArgumentMeta(a.RESPONSE)
 export const Context = () => addArgumentMeta(a.CONTEXT)
 
-export { Interceptor }
+export { Decorate }

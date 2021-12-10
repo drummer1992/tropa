@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { INTERNAL_SERVER_ERROR, TropaError } from './errors'
+import { NotFoundError, InternalServerError } from './errors'
 
 export default class Hooks {
   onRequest(ctx) {
@@ -19,10 +19,10 @@ export default class Hooks {
   }
 
   errorHandler(err, ctx) {
-    if (!(err instanceof TropaError)) {
+    if (!(err instanceof NotFoundError)) {
       console.error(err.stack)
 
-      err = INTERNAL_SERVER_ERROR
+      err = new InternalServerError()
     }
 
     return err

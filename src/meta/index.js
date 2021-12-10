@@ -23,9 +23,9 @@ export const findRoute = (url, method) => {
 }
 
 export const setControllerPrefix = (Controller, prefix) => {
-  const meta = controllersMeta.get(Controller)
+  const controllerMeta = controllersMeta.get(Controller)
 
-  meta.setRegExp(prefix)
+  controllerMeta.setRegExp(prefix)
 }
 
 const initControllerMeta = Controller => {
@@ -60,8 +60,7 @@ export const addArgumentMeta = (Controller, method, { index, type, attribute }) 
 export const setApiPrefix = prefix => appMeta.set(App.PREFIX, Url.trim(prefix))
 
 export const setHooks = CustomHooks => {
-  assert(CustomHooks.prototype instanceof Hooks,
-    'hooks should be subclass of Hooks')
+  assert(CustomHooks?.prototype instanceof Hooks, 'hooks should be subclass of Hooks')
 
   appMeta.set(App.HOOKS, new CustomHooks())
 }
