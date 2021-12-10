@@ -1,3 +1,4 @@
+import { object, string, number } from 'sito'
 import { ApiError } from '../errors'
 import {
   Get,
@@ -41,6 +42,12 @@ const welcome = fn => (...args) => {
   return fn(...args)
 }
 
+const validate = (validationSchema, options) => async payload => {
+  await validationSchema.assert(payload, options)
+
+  return payload
+}
+
 @Decorate(auth, logger)
 @Prefix('/user')
 export default class UserController {
@@ -61,7 +68,17 @@ export default class UserController {
   @Headers({ 'Content-Type': 'text/plain' })
   @Code(c.CREATED)
   @Post()
-  createProfile(@Body() body) {
+  createProfile(
+    @Body(validate(
+      object({
+        name   : string().required(),
+        age    : number().required(),
+        profile: object({
+          id: number(),
+        }).strict().required(),
+      }).strict().required(),
+    )) body,
+  ) {
     const id = Math.floor(Math.random() * 1e6).toString()
 
     users.push({ id, ...(body) })

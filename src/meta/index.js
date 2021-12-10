@@ -48,13 +48,13 @@ export const setRouteHeaders = (Controller, method, headers) => {
   controllersMeta.get(Controller).getRoute(method).setHeaders(headers)
 }
 
-export const addArgumentMeta = (Controller, method, { index, type, attribute }) => {
+export const addArgumentMeta = (Controller, method, index, meta) => {
   initControllerMeta(Controller)
 
   const controllerMeta = controllersMeta.get(Controller)
   const methodMeta = controllerMeta.getRoute(method)
 
-  methodMeta.addArgument(type, attribute, index)
+  methodMeta.addArgument(index, meta)
 }
 
 export const setApiPrefix = prefix => appMeta.set(App.PREFIX, Url.trim(prefix))

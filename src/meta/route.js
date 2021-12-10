@@ -14,7 +14,7 @@ const argumentProviders = {
 const parseArgument = async (url, argMeta, ctx) => {
   const argument = await argumentProviders[argMeta.type](url, ctx)
 
-  return argMeta.attribute ? argument?.[argMeta.attribute] : argument
+  return argMeta.mapFn(argMeta.attribute ? argument?.[argMeta.attribute] : argument)
 }
 
 export default class RouteMeta {
@@ -30,8 +30,8 @@ export default class RouteMeta {
     return Promise.all(this.arguments.map(argMeta => parseArgument(this.url, argMeta, ctx)))
   }
 
-  addArgument(type, attribute, index) {
-    this.arguments[index] = { type, attribute }
+  addArgument(index, meta) {
+    this.arguments[index] = meta
   }
 
   setUrl(urlInstance) {
