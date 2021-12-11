@@ -189,6 +189,10 @@ class Hooks extends TropaHooks {
   onRequest(ctx) {
   }
 
+  beforeParsing(ctx) {
+    
+  }
+
   beforeHandler(ctx) {
   }
 
