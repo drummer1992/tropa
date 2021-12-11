@@ -132,11 +132,7 @@ class Root {
 There is an ability to get context entities using parameter decorators.
 
 ```js
-import {
-  Request,
-  Response,
-  Context,
-} from 'tropa'
+import { Request, Response, Context } from 'tropa'
 
 class User {
   @Get('/') 
@@ -190,7 +186,6 @@ class Hooks extends TropaHooks {
   }
 
   beforeParsing(ctx) {
-    
   }
 
   beforeHandler(ctx) {
