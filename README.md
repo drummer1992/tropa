@@ -48,7 +48,8 @@ Route prefix can be added using `Prefix` decorator.
 ```js
 import { Prefix, Get } from 'tropa'
 
-@Prefix('/meta') class Meta {
+@Prefix('/meta') 
+class Meta {
   @Get('/dictionaries') 
   getDictionaties() {
     return {
@@ -77,7 +78,8 @@ It is possible to defined default headers and default status code for particular
 ```js
 import { Post, Headers, StatusCode, Prefix, Body } from 'tropa'
 
-@Prefix('/user') class User {
+@Prefix('/user')
+class User {
   @StatusCode(201)
   @Headers({ 'Content-Type': 'text/plain' })
   @Post('/') 
@@ -165,7 +167,8 @@ const auth = fn => (...args) => {
   return fn(...args)
 }
 
-@Decorate(auth) class User {
+@Decorate(auth)
+class User {
   @Get() 
   hello() {
     return { Hello: 'World' }
