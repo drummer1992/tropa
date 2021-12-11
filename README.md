@@ -20,7 +20,8 @@ import { Get, listener } from 'tropa'
 import http from 'http'
 
 class Root {
-  @Get('/') hello() {
+  @Get('/') 
+  hello() {
     return { Hello: 'World' }
   }
 }
@@ -48,7 +49,8 @@ Route prefix can be added using `Prefix` decorator.
 import { Prefix, Get } from 'tropa'
 
 @Prefix('/meta') class Meta {
-  @Get('/dictionaries') getDictionaties() {
+  @Get('/dictionaries') 
+  getDictionaties() {
     return {
       foo: 'bar',
       baz: 42,
@@ -78,7 +80,8 @@ import { Post, Headers, StatusCode, Prefix, Body } from 'tropa'
 @Prefix('/user') class User {
   @StatusCode(201)
   @Headers({ 'Content-Type': 'text/plain' })
-  @Post('/') create(@Body() body) {
+  @Post('/') 
+  create(@Body() body) {
     return User.create(body)
   }
 }
@@ -95,7 +98,8 @@ It means that the `body` for example will be parsed only if `Body` decorator was
 import { Post, Body, Param, Query } from 'tropa'
 
 class Root {
-  @Post('/{dynamicParam}') echo(@Body() body, @Query() query, @Param() params) {
+  @Post('/{dynamicParam}') 
+  echo(@Body() body, @Query() query, @Param() params) {
     return { body, query, params }
   }
 }
@@ -105,7 +109,8 @@ All these decorators take `path` and `map` function.
 
 ```js
 class Root {
-  @Post() echo(@Body('name', doSomethingWithName) name) {
+  @Post() 
+  echo(@Body('name', doSomethingWithName) name) {
     return { name }
   }
 }
@@ -115,7 +120,8 @@ It is possible to use only `map` function.
 
 ```js
 class Root {
-  @Post() echo(@Body(doSomethingWithBody) body) {
+  @Post() 
+  echo(@Body(doSomethingWithBody) body) {
     return body
   }
 }
@@ -131,7 +137,8 @@ import {
 } from 'tropa'
 
 class User {
-  @Get('/') hello(@Context() ctx, @Request() req, @Response() res) {
+  @Get('/') 
+  hello(@Context() ctx, @Request() req, @Response() res) {
     res.raw.end(JSON.stringify({ Hello: 'World' }))
   }
 }
@@ -159,7 +166,8 @@ const auth = fn => (...args) => {
 }
 
 @Decorate(auth) class User {
-  @Get() hello() {
+  @Get() 
+  hello() {
     return { Hello: 'World' }
   }
 }
