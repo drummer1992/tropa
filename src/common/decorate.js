@@ -1,10 +1,12 @@
 import { getPrototypeKeys } from '../utils/object'
 
 const decorateMethod = (decorators, descriptor) => {
-  const method = decorators.reduce((method, decorator) => decorator(method), descriptor.value)
+  const method = descriptor.value
 
   descriptor.value = function () {
-    return method.apply(this, arguments)
+    const call = decorators.reduce((method, decorate) => decorate(method), method.bind(this))
+
+    return call(arguments)
   }
 
   return descriptor
