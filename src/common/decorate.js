@@ -6,7 +6,7 @@ const decorateMethod = (decorators, descriptor) => {
   descriptor.value = function () {
     const call = decorators.reduce((method, decorate) => decorate(method), method.bind(this))
 
-    return call(arguments)
+    return call.apply(this, arguments)
   }
 
   return descriptor
