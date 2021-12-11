@@ -1,6 +1,6 @@
 # tropa
 
-Tropa is a simple decorator based routing library for a Node.js applications, built using
+Tropa is a simple decorators based routing library for a Node.js applications, built using
 awesome [Babel](https://github.com/babel/babel) compiler.
 
 # Init App
