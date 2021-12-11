@@ -1,7 +1,7 @@
 {
   "extends": "eslint:recommended",
   "root": true,
-  "ignorePatterns": ["/lib/*.js"],
+  "ignorePatterns": ["/lib/*.js", "/types/*.d.ts"],
   "env": {
     "es6": true,
     "node": true

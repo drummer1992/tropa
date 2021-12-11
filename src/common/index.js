@@ -6,7 +6,7 @@ import { identity } from '../utils/function'
 import { isFunction } from '../utils/predicates'
 
 export const Prefix = prefix => Controller => meta.setControllerPrefix(Controller, Url.trim(prefix))
-export const Code = code => (target, property) => meta.setRouteStatusCode(target.constructor, property, code)
+export const StatusCode = code => (target, property) => meta.setRouteStatusCode(target.constructor, property, code)
 export const Headers = headers => (target, property) => meta.setRouteHeaders(target.constructor, property, headers)
 
 const endpoint = (httpMethod, pattern) => (target, method) =>

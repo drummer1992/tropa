@@ -1,8 +1,9 @@
 {
   "name": "tropa",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Node.js routing library powered by Babel",
   "main": "./lib/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "npx babel ./src --out-dir lib",
     "lint": "eslint ./src --ext .js --fix",
@@ -31,6 +32,7 @@
     "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/preset-env": "^7.13.9",
     "@babel/register": "^7.13.8",
+    "@types/node": "^16.11.12",
     "babel-plugin-parameter-decorator": "^1.0.16",
     "eslint": "^7.21.0",
     "mocha": "^9.1.3"

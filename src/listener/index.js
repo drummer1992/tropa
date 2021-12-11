@@ -31,6 +31,6 @@ export default async (req, res) => {
   res.on('finish', () => hooks.onResponse(ctx))
 
   if (!ctx.response.handovered) {
-    return reply(ctx.response)
+    reply(ctx.response)
   }
 }

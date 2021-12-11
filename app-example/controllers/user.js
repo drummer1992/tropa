@@ -7,7 +7,7 @@ import {
   Patch,
   Prefix,
   Delete,
-  Code,
+  StatusCode,
   Param,
   Body,
   Response,
@@ -66,7 +66,7 @@ class UserController {
   }
 
   @Headers({ 'Content-Type': 'text/plain' })
-  @Code(c.CREATED)
+  @StatusCode(c.CREATED)
   @Post()
   createProfile(
     @Body(validate(

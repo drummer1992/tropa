@@ -2,7 +2,7 @@ import { asyncContextStorage } from './storage'
 import { randomCode } from '../utils/random'
 import k from '../symbols'
 
-class Request {
+class TropaRequest {
   constructor(req) {
     this[k.kRequest] = req
     this[k.kRequestId] = randomCode(4)
@@ -23,7 +23,7 @@ class Request {
   }
 }
 
-class Response {
+class TropaResponse {
   constructor(res) {
     this[k.kHandovered] = false
     this[k.kResponse] = res
@@ -45,8 +45,8 @@ class Response {
 
 export default class Context {
   constructor(req, res) {
-    this[k.kRequest] = new Request(req)
-    this[k.kResponse] = new Response(res)
+    this[k.kRequest] = new TropaRequest(req)
+    this[k.kResponse] = new TropaResponse(res)
 
     asyncContextStorage.enterWith(this)
   }
