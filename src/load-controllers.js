@@ -1,8 +1,16 @@
 import fs from 'fs/promises'
 import path from 'path'
+import assert from 'assert'
 
 const getModulesPath = async pathToDir => {
   const dir = await fs.readdir(path.resolve(__dirname, pathToDir))
+    .catch(e => {
+      if (e.code === 'ENOENT') {
+        throw new Error(`folder with controllers does not exist ${pathToDir}`)
+      }
+
+      throw e
+    })
 
   return dir.filter(item => item.includes('.js'))
     .map(fileName => path.resolve(__dirname, pathToDir, fileName))
@@ -10,15 +18,14 @@ const getModulesPath = async pathToDir => {
 
 const loadModules = modulesPath => Promise.all(modulesPath.map(path => import(path)))
 
-export default async function loadControllers(pathToDir) {
-  const modulesPath = await getModulesPath(pathToDir)
-  const controllers = await loadModules(modulesPath)
+export default async pathToDir => {
+  assert(pathToDir, 'path to folder with controllers is required')
 
-  controllers.forEach((Controller, i) => {
-    if (!Controller.default?.name) {
-      throw new Error(`Default export not found for module: ${modulesPath[i]}`)
-    }
+  const controllersPaths = await getModulesPath(pathToDir)
 
-    console.log(`Controller ${Controller.default.name} successfully initialized`)
-  })
+  assert(controllersPaths.length, `controllers not found in the folder ${pathToDir}`)
+
+  await loadModules(controllersPaths)
+
+  console.warn('controllers successfully initialized')
 }

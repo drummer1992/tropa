@@ -50,7 +50,7 @@ const validate = (validationSchema, options) => async payload => {
 
 @Decorate(auth, logger)
 @Prefix('/user')
-export default class UserController {
+class UserController {
   @Decorate(welcome)
   @Get('/')
   getProfiles() {

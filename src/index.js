@@ -8,8 +8,8 @@ import { getContext } from './context'
 
 export {
   HttpCode,
-  Hooks,
   NotFoundError,
+  Hooks,
   listener,
   loadControllers,
   setHooks,
