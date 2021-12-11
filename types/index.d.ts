@@ -55,7 +55,7 @@ export function loadControllers(absolutePathToFolderWithControllers: string): vo
 
 export function setHooks(CustomHooks: Hooks): void
 
-export function setApiPrefix(apiPrefix: string): void
+export function setApiPrefix(prefix: string): void
 
 declare class TropaRequest {
     readonly raw: IncomingMessage
@@ -87,7 +87,7 @@ export function StatusCode(statusCode: StatusCodeType): MethodDecorator
 
 export function Headers(headers: { [key: string]: string }): MethodDecorator
 
-export function Prefix(routePrefix: string): ClassDecorator
+export function Prefix(prefix: string): ClassDecorator
 
 export function Get(path: string): MethodDecorator
 
