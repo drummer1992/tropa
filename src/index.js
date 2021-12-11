@@ -1,4 +1,4 @@
-import Hooks from './hooks'
+import TropaHooks from './hooks'
 import { HttpCode } from './constants'
 import { NotFoundError, InternalServerError } from './errors'
 import listener from './listener'
@@ -10,7 +10,7 @@ export {
   HttpCode,
   NotFoundError,
   InternalServerError,
-  Hooks,
+  TropaHooks,
   listener,
   loadControllers,
   setHooks,

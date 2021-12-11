@@ -1,10 +1,10 @@
-import Context from '../context'
+import TropaContext from '../context'
 import * as meta from '../meta'
 import { HttpCode as c } from '../constants'
 import reply from './reply'
 
 export default async (req, res) => {
-  const ctx = new Context(req, res)
+  const ctx = new TropaContext(req, res)
 
   const hooks = meta.getHooks()
 

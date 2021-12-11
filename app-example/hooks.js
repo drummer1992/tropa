@@ -1,9 +1,9 @@
-import { Hooks } from '../lib'
+import { TropaHooks } from '../lib'
 
 const compact = (...args) => args.filter(Boolean)
 const serialize = value => JSON.stringify(value)
 
-export default class AppHooks extends Hooks {
+export default class AppHooks extends TropaHooks {
   onRequest(ctx) {
     ctx.start = new Date()
   }

@@ -36,16 +36,16 @@ export declare class NotFoundError extends TropaError {
 export declare class InternalServerError extends TropaError {
 }
 
-export class Hooks {
-    onRequest(ctx: Context): void
+export class TropaHooks {
+    onRequest(ctx: TropaContext): void
 
-    onResponse(ctx: Context): void
+    onResponse(ctx: TropaContext): void
 
-    beforeParsing(ctx: Context): void
+    beforeParsing(ctx: TropaContext): void
 
-    beforeHandler(ctx: Context): void
+    beforeHandler(ctx: TropaContext): void
 
-    errorHandler(ctx: Context): void
+    errorHandler(ctx: TropaContext): void
 }
 
 
@@ -53,7 +53,7 @@ export function listener(req: IncomingMessage, res: ServerResponse): void
 
 export function loadControllers(absolutePathToFolderWithControllers: string): void
 
-export function setHooks(CustomHooks: Hooks): void
+export function setHooks(CustomHooks: TropaHooks): void
 
 export function setApiPrefix(prefix: string): void
 
@@ -76,12 +76,12 @@ declare class TropaResponse {
     body: any
 }
 
-export class Context {
+declare class TropaContext {
     readonly request: TropaRequest
     readonly response: TropaResponse
 }
 
-export function getContext(): Context
+export function getContext(): TropaContext
 
 export function StatusCode(statusCode: StatusCodeType): MethodDecorator
 
@@ -100,18 +100,15 @@ export function Put(path: string): MethodDecorator
 export function Delete(path: string): MethodDecorator
 
 export function Body(): ParameterDecorator
-export function Body(path: string): ParameterDecorator
-export function Body(path: string, mapFn: (body: any) => any): ParameterDecorator
+export function Body(path: string, mapFn?: (body: any) => any): ParameterDecorator
 export function Body(mapFn: (body: any) => any): ParameterDecorator
 
 export function Param(): ParameterDecorator
-export function Param(path: string): ParameterDecorator
-export function Param(path: string, mapFn: (body: any) => any): ParameterDecorator
+export function Param(path: string, mapFn?: (body: any) => any): ParameterDecorator
 export function Param(mapFn: (body: any) => any): ParameterDecorator
 
 export function Query(): ParameterDecorator
-export function Query(path: string): ParameterDecorator
-export function Query(path: string, mapFn: (body: any) => any): ParameterDecorator
+export function Query(path: string, mapFn?: (body: any) => any): ParameterDecorator
 export function Query(mapFn: (body: any) => any): ParameterDecorator
 
 

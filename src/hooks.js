@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { NotFoundError, InternalServerError } from './errors'
 
-export default class Hooks {
+export default class TropaHooks {
   onRequest(ctx) {
 
   }

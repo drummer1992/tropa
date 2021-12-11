@@ -1,6 +1,6 @@
 import Url from '../utils/url'
 import ControllerMeta from './controller'
-import Hooks from '../hooks'
+import TropaHooks from '../hooks'
 import { notFoundRoute } from './route'
 import { appMeta, controllersMeta } from './storage'
 import { App } from './constants'
@@ -60,7 +60,7 @@ export const addArgumentMeta = (Controller, method, index, meta) => {
 export const setApiPrefix = prefix => appMeta.set(App.PREFIX, Url.trim(prefix))
 
 export const setHooks = CustomHooks => {
-  assert(CustomHooks?.prototype instanceof Hooks, 'hooks should be subclass of Hooks')
+  assert(CustomHooks?.prototype instanceof TropaHooks, 'hooks should be subclass of TropaHooks')
 
   appMeta.set(App.HOOKS, new CustomHooks())
 }

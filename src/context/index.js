@@ -43,7 +43,7 @@ class TropaResponse {
   }
 }
 
-export default class Context {
+export default class TropaContext {
   constructor(req, res) {
     this[k.kRequest] = new TropaRequest(req)
     this[k.kResponse] = new TropaResponse(res)
