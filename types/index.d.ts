@@ -36,7 +36,7 @@ export declare class NotFoundError extends TropaError {
 export declare class InternalServerError extends TropaError {
 }
 
-export default class Hooks {
+export class Hooks {
     onRequest(ctx: Context): void
 
     onResponse(ctx: Context): void
