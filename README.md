@@ -11,6 +11,12 @@ You can easily create your `tropa` app using [create-tropa](https://www.npmjs.co
 npm init tropa my-app
 ```
 
+It is possible to generate `TypeScript` app using following option `--lang=ts`
+
+```sh
+npm init tropa my-app-ts -- --lang=ts
+```
+
 # Usage
 
 Here is an example of `Hello World` app.
