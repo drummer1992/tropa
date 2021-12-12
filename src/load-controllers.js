@@ -12,7 +12,7 @@ const getModulesPath = async pathToDir => {
       throw e
     })
 
-  return dir.filter(item => item.includes('.js'))
+  return dir.filter(item => item.endsWith('.js') || item.endsWith('.ts'))
     .map(fileName => path.resolve(__dirname, pathToDir, fileName))
 }
 
