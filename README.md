@@ -91,7 +91,7 @@ class User {
 
 ## Parameter decorators
 
-Parameter decorators provides an opportunity to parse and get
+Parameter decorators provide an opportunity to parse and get
 `query` or `path` params or `body` only when it's needed.
 
 It means that the `body` for example will be parsed only if `Body` decorator was set.
@@ -142,7 +142,7 @@ class User {
 }
 ```
 
-Please note that if you retrieve `req.raw` field (instance of `IncomingMessage`), tropa handover responsibility of the
+Please note that if you retrieve `res.raw` field (instance of `ServerResponse`), `tropa` hand-overs responsibility of the
 response to you!
 
 ## Class decoration and methods decoration
@@ -176,7 +176,7 @@ class User {
 
 Using hooks you are able to do something during the request life cycle.
 
-All that you need is create `TropaHooks` and apply them using `setHooks` method.
+All you need is to create `TropaHooks` and apply them using `setHooks` method.
 
 ```js
 import { TropaHooks, setHooks } from 'tropa'
