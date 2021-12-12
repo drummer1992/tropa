@@ -1,6 +1,6 @@
 {
   "name": "tropa",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "Node.js routing library powered by Babel",
   "main": "./lib/index.js",
   "types": "types/index.d.ts",
@@ -37,5 +37,7 @@
     "eslint": "^7.21.0",
     "mocha": "^9.1.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/runtime": "^7.16.3"
+  }
 }

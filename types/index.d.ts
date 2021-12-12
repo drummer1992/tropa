@@ -116,6 +116,8 @@ export function Request(): ParameterDecorator
 
 export function Response(): ParameterDecorator
 
+export function Context(): ParameterDecorator
+
 interface Decorator {
     (call: (...args) => any)
 }
