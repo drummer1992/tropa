@@ -87,6 +87,8 @@ export function StatusCode(statusCode: StatusCodeType): MethodDecorator
 
 export function Headers(headers: { [key: string]: string }): MethodDecorator
 
+export function Redirect(url: string): MethodDecorator
+
 export function Prefix(prefix: string): ClassDecorator
 
 export function Get(path: string): MethodDecorator

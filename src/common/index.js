@@ -4,13 +4,20 @@ import { Argument as a } from '../meta/constants'
 import Decorate from './decorate'
 import { identity } from '../utils/function'
 import { isFunction } from '../utils/predicates'
+import { HttpCode as c } from '../constants'
 
 export const Prefix = prefix => Controller => meta.setControllerPrefix(Controller, Url.trim(prefix))
 export const StatusCode = code => (target, property) => meta.setRouteStatusCode(target.constructor, property, code)
 export const Headers = headers => (target, property) => meta.setRouteHeaders(target.constructor, property, headers)
 
-const endpoint = (httpMethod, pattern) => (target, method) =>
+export const Redirect = url => (target, property) => {
+  meta.setRouteStatusCode(target.constructor, property, c.FOUND)
+  meta.setRouteHeaders(target.constructor, property, { Location: url })
+}
+
+const endpoint = (httpMethod, pattern) => (target, method) => {
   meta.addRouteMeta(target.constructor, method, new Url(httpMethod, pattern))
+}
 
 export const Get = path => endpoint('GET', path)
 export const Post = path => endpoint('POST', path)

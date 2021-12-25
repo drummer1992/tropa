@@ -22,6 +22,7 @@ export {
   Prefix,
   StatusCode,
   Headers,
+  Redirect,
   Get,
   Post,
   Patch,

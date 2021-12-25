@@ -22,34 +22,40 @@ export const findRoute = (url, method) => {
   return notFoundRoute
 }
 
-export const setControllerPrefix = (Controller, prefix) => {
-  const controllerMeta = controllersMeta.get(Controller)
-
-  controllerMeta.setRegExp(prefix)
-}
-
-const initControllerMeta = Controller => {
+const initControllerMetaIfNeeded = Controller => {
   if (!controllersMeta.has(Controller)) {
     controllersMeta.set(Controller, new ControllerMeta(Controller))
   }
 }
 
+export const setControllerPrefix = (Controller, prefix) => {
+  initControllerMetaIfNeeded(Controller)
+
+  const controllerMeta = controllersMeta.get(Controller)
+
+  controllerMeta.setRegExp(prefix)
+}
+
 export const addRouteMeta = (Controller, method, urlInstance) => {
-  initControllerMeta(Controller)
+  initControllerMetaIfNeeded(Controller)
 
   controllersMeta.get(Controller).addRoute(method, urlInstance)
 }
 
 export const setRouteStatusCode = (Controller, method, code) => {
+  initControllerMetaIfNeeded(Controller)
+
   controllersMeta.get(Controller).getRoute(method).setStatusCode(code)
 }
 
 export const setRouteHeaders = (Controller, method, headers) => {
+  initControllerMetaIfNeeded(Controller)
+
   controllersMeta.get(Controller).getRoute(method).setHeaders(headers)
 }
 
 export const addArgumentMeta = (Controller, method, index, meta) => {
-  initControllerMeta(Controller)
+  initControllerMetaIfNeeded(Controller)
 
   const controllerMeta = controllersMeta.get(Controller)
   const methodMeta = controllerMeta.getRoute(method)

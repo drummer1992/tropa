@@ -1,6 +1,6 @@
 {
   "name": "tropa",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "Node.js routing library powered by Babel",
   "main": "./lib/index.js",
   "types": "types/index.d.ts",

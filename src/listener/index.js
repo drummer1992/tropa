@@ -21,6 +21,7 @@ export default async (req, res) => {
 
     ctx.response.body ??= await route.handler(...args)
     ctx.response.statusCode ??= route.statusCode
+    ctx.response.headers ??= route.headers
   } catch (err) {
     ctx.response.body = await hooks.errorHandler(err, ctx)
     ctx.response.statusCode ??= err.statusCode

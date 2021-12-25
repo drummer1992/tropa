@@ -95,6 +95,21 @@ class User {
 }
 ```
 
+`Redirect` decorator exported as well, so you are able to redirect request after route handler
+
+```js
+import { Get, Redirect, Prefix } from 'tropa'
+
+@Prefix('/oauth')
+class OAuth {
+  @Redirect('https://www.facebook.com/')
+  @Get('/facebook')
+  facebook() {
+    
+  }
+}
+```
+
 ## Parameter decorators
 
 Parameter decorators provide an opportunity to parse and get
