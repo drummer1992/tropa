@@ -45,7 +45,7 @@ export class TropaHooks {
 
     beforeHandler(ctx: TropaContext): void
 
-    errorHandler(ctx: TropaContext): void
+    errorHandler(error: Error, ctx: TropaContext): void
 }
 
 
