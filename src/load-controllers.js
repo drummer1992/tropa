@@ -26,6 +26,4 @@ export default async pathToDir => {
   assert(controllersPaths.length, `controllers not found in the folder ${pathToDir}`)
 
   await loadModules(controllersPaths)
-
-  console.warn('controllers successfully initialized')
 }

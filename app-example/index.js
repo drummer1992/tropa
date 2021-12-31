@@ -10,14 +10,7 @@ async function bootstrap() {
   tropa.setHooks(AppHooks)
   tropa.setApiPrefix('/api/v1')
   tropa.use(cors())
-  tropa.use(pino({
-    prettyPrint: {
-      ignore       : 'req.headers,req.remoteAddress,req.remotePort,res.headers',
-      translateTime: true,
-      singleLine   : true,
-    },
-    base       : false,
-  }))
+  tropa.use(pino())
 
   await tropa.loadControllers(path.resolve(__dirname, './controllers'))
 

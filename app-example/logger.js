@@ -1,9 +1,7 @@
 import { getContext } from '../lib'
 import pino from 'pino-http'
 
-const { logger: defaultLogger } = pino({
-  prettyPrint: { translateTime: true },
-})
+const { logger: defaultLogger } = pino()
 
 const print = (level, message) => {
   const ctx = getContext()
