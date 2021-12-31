@@ -231,6 +231,20 @@ Those error classes are exported too.
 import { NotFoundError, InternalServerError } from 'tropa'
 ```
 
+## Middlewares
+
+Tropa provides an ability to use middlewares too. 
+
+```js
+import * as tropa from 'tropa'
+import http from 'http'
+import cors from 'cors'
+
+tropa.use(cors())
+
+http.createServer(tropa.listener).listen(3000)
+```
+
 ## Current context
 
 You are able to get current context using `getContext` method.

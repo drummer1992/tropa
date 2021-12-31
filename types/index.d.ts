@@ -126,8 +126,8 @@ interface Decorator {
 
 export function Decorate(...decorators: Decorator[]): MethodDecorator | ClassDecorator
 
-interface TropaMiddleware {
+interface Middleware {
     (req: IncomingMessage, res: ServerResponse, next: (err?: Error) => void): any | Promise<any>
 }
 
-export function use(middleware: TropaMiddleware)
+export function use(middleware: Middleware)
