@@ -12,10 +12,10 @@ async function bootstrap() {
   tropa.use(cors())
   tropa.use(pino({
     prettyPrint: {
-      hideObject   : true,
+      ignore       : 'req.headers,req.remoteAddress,req.remotePort,res.headers',
       translateTime: true,
+      singleLine   : true,
     },
-    autoLogging: false,
     base       : false,
   }))
 
