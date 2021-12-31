@@ -23,6 +23,9 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "pino-http": "^6.5.0",
+    "pino-pretty": "^7.3.0",
     "sito": "^1.3.8"
   }
 }

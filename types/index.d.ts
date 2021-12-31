@@ -114,9 +114,9 @@ export function Query(path: string, mapFn?: (body: any) => any): ParameterDecora
 export function Query(mapFn: (body: any) => any): ParameterDecorator
 
 
-export function Request(): ParameterDecorator
+export function Request(attr?: string): ParameterDecorator
 
-export function Response(): ParameterDecorator
+export function Response(attr?: string): ParameterDecorator
 
 export function Context(): ParameterDecorator
 
@@ -125,3 +125,9 @@ interface Decorator {
 }
 
 export function Decorate(...decorators: Decorator[]): MethodDecorator | ClassDecorator
+
+interface Middleware {
+    (req: IncomingMessage, res: ServerResponse, next: (err?: Error) => void): any | Promise<any>
+}
+
+export function use(middleware: Middleware)

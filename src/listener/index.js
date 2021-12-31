@@ -2,8 +2,9 @@ import TropaContext from '../context'
 import * as meta from '../meta'
 import { HttpCode as c } from '../constants'
 import reply from './reply'
+import { runMiddlewares } from './middleware'
 
-export default async (req, res) => {
+export default (req, res) => runMiddlewares(req, res, async err => {
   const ctx = new TropaContext(req, res)
 
   const hooks = meta.getHooks()
@@ -11,7 +12,11 @@ export default async (req, res) => {
   try {
     await hooks.onRequest(ctx)
 
-    const route = meta.findRoute(req.url, req.method)
+    if (err) { // noinspection ExceptionCaughtLocallyJS
+      throw err
+    }
+
+    const route = meta.findRoute(ctx.request.url, ctx.request.method)
 
     await hooks.beforeParsing(ctx)
 
@@ -34,4 +39,4 @@ export default async (req, res) => {
   if (!ctx.response.handovered) {
     reply(ctx.response)
   }
-}
+})

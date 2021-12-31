@@ -39,8 +39,8 @@ const addArgumentMeta = (type, args = []) => (target, methodName, index) => {
 export const Body = (...args) => addArgumentMeta(a.BODY, args)
 export const Param = (...args) => addArgumentMeta(a.PARAM, args)
 export const Query = (...args) => addArgumentMeta(a.QUERY, args)
-export const Request = () => addArgumentMeta(a.REQUEST)
-export const Response = () => addArgumentMeta(a.RESPONSE)
+export const Request = attr => addArgumentMeta(a.REQUEST, [attr])
+export const Response = attr => addArgumentMeta(a.RESPONSE, [attr])
 export const Context = () => addArgumentMeta(a.CONTEXT)
 
 export { Decorate }
