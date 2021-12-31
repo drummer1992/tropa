@@ -1,4 +1,5 @@
 import { TropaHooks } from '../lib'
+import logger from './logger'
 
 const compact = (...args) => args.filter(Boolean)
 const serialize = value => JSON.stringify(value)
@@ -9,7 +10,7 @@ export default class AppHooks extends TropaHooks {
   }
 
   beforeHandler(ctx) {
-    console.log(...compact(
+    logger.info(...compact(
       ctx.start.toISOString(),
       `[${ctx.request.id}]`,
       '[REQ]',
@@ -24,7 +25,7 @@ export default class AppHooks extends TropaHooks {
   onResponse(ctx) {
     const end = new Date()
 
-    console.log(...compact(
+    logger.info(...compact(
       end.toISOString(),
       `[${ctx.request.id}]`,
       '[RES]',
@@ -37,7 +38,7 @@ export default class AppHooks extends TropaHooks {
   }
 
   errorHandler(err) {
-    console.error(err.stack)
+    logger.error(err.message)
 
     return err
   }

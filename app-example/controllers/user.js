@@ -17,6 +17,7 @@ import {
   HttpCode as c,
   getContext,
 } from '../../lib'
+import logger from '../logger'
 
 let users = []
 
@@ -30,14 +31,14 @@ const auth = fn => (...args) => {
   return fn(...args)
 }
 
-const logger = fn => (...args) => {
-  console.log('user logger')
+const classLogger = fn => (...args) => {
+  logger.info('class logger')
 
   return fn(...args)
 }
 
-const welcome = fn => (...args) => {
-  console.log('welcome')
+const methodLogger = fn => (...args) => {
+  logger.info('method logger')
 
   return fn(...args)
 }
@@ -48,10 +49,10 @@ const validate = (validationSchema, options) => async payload => {
   return payload
 }
 
-@Decorate(auth, logger)
+@Decorate(auth, classLogger)
 @Prefix('/user')
 class UserController {
-  @Decorate(welcome)
+  @Decorate(methodLogger)
   @Get('/')
   getProfiles() {
     return users

@@ -36,3 +36,5 @@ export {
   Decorate,
   Context,
 } from './common'
+
+export { use } from './listener/middleware'

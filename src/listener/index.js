@@ -2,36 +2,43 @@ import TropaContext from '../context'
 import * as meta from '../meta'
 import { HttpCode as c } from '../constants'
 import reply from './reply'
+import { withMiddlewares } from './middleware'
 
-export default async (req, res) => {
+export default (req, res) => {
   const ctx = new TropaContext(req, res)
 
-  const hooks = meta.getHooks()
+  withMiddlewares(req, res, async err => {
+    const hooks = meta.getHooks()
 
-  try {
-    await hooks.onRequest(ctx)
+    try {
+      await hooks.onRequest(ctx)
 
-    const route = meta.findRoute(req.url, req.method)
+      if (err) { // noinspection ExceptionCaughtLocallyJS
+        throw err
+      }
 
-    await hooks.beforeParsing(ctx)
+      const route = meta.findRoute(ctx.request.url, ctx.request.method)
 
-    const args = await route.parseArguments(ctx)
+      await hooks.beforeParsing(ctx)
 
-    await hooks.beforeHandler(ctx)
+      const args = await route.parseArguments(ctx)
 
-    ctx.response.body ??= await route.handler(...args)
-    ctx.response.statusCode ??= route.statusCode
-    ctx.response.headers ??= route.headers
-  } catch (err) {
-    ctx.response.body = await hooks.errorHandler(err, ctx)
-    ctx.response.statusCode ??= err.statusCode
-  }
+      await hooks.beforeHandler(ctx)
 
-  ctx.response.statusCode ??= c.OK
+      ctx.response.body ??= await route.handler(...args)
+      ctx.response.statusCode ??= route.statusCode
+      ctx.response.headers ??= route.headers
+    } catch (err) {
+      ctx.response.body = await hooks.errorHandler(err, ctx)
+      ctx.response.statusCode ??= err.statusCode
+    }
 
-  res.on('finish', () => hooks.onResponse(ctx))
+    ctx.response.statusCode ??= c.OK
 
-  if (!ctx.response.handovered) {
-    reply(ctx.response)
-  }
+    res.on('finish', () => hooks.onResponse(ctx))
+
+    if (!ctx.response.handovered) {
+      reply(ctx.response)
+    }
+  })
 }
