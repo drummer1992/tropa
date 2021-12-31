@@ -75,7 +75,7 @@ class UserController {
         name   : string().required(),
         age    : number().required(),
         profile: object({
-          id: number(),
+          id: number().required(),
         }).strict().required(),
       }).strict().required(),
     )) body,

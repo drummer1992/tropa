@@ -10,35 +10,28 @@ export default class AppHooks extends TropaHooks {
   }
 
   beforeHandler(ctx) {
-    logger.info(...compact(
-      ctx.start.toISOString(),
-      `[${ctx.request.id}]`,
+    logger.info(compact(
       '[REQ]',
       ctx.request.method,
       ctx.request.url,
       ctx.request.params && 'PARAM: ' + serialize(ctx.request.params),
       ctx.request.query && 'QUERY: ' + serialize(ctx.request.query),
       ctx.request.body && 'BODY: ' + serialize(ctx.request.body),
-    ))
+    ).join(' '))
   }
 
   onResponse(ctx) {
-    const end = new Date()
+    if (ctx.response.body) {
+      logger.info('[RES] ' + serialize(ctx.response.body))
+    }
 
-    logger.info(...compact(
-      end.toISOString(),
-      `[${ctx.request.id}]`,
-      '[RES]',
-      ctx.response.body && 'BODY: ' + serialize(ctx.response.body),
-    ))
+    const ms = Date.now() - ctx.start.getTime()
 
-    const ms = end.getTime() - ctx.start.getTime()
-
-    console.log(`[${ctx.request.id}]`, `Processing finished. ${ms} ms`)
+    logger.info(`Processing finished. ${ms} ms`)
   }
 
   errorHandler(err) {
-    logger.error(err.message)
+    logger.error(err)
 
     return err
   }

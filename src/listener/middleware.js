@@ -9,7 +9,7 @@ export const use = middleware => {
   middlewares.push(middleware)
 }
 
-export const withMiddlewares = (req, res, next) => {
+export const runMiddlewares = (req, res, next) => {
   const run = idx => {
     if (idx === middlewares.length) {
       return next()
