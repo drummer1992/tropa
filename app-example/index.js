@@ -9,14 +9,15 @@ import logger from './logger'
 async function bootstrap() {
   tropa.setHooks(AppHooks)
   tropa.setApiPrefix('/api/v1')
+  tropa.use(cors())
   tropa.use(pino({
     prettyPrint: {
       hideObject   : true,
       translateTime: true,
     },
-    base: false,
+    autoLogging: false,
+    base       : false,
   }))
-  tropa.use(cors())
 
   await tropa.loadControllers(path.resolve(__dirname, './controllers'))
 
