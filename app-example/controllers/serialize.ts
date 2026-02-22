@@ -4,7 +4,7 @@ import * as Stream from 'stream'
 const content = ['H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd']
 
 @Prefix('/serialize')
-class SerializeController {
+export default class SerializeController {
   @Get('/stream')
   getStream() {
     return Stream.Readable.from(content)
