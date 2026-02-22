@@ -25,7 +25,7 @@ const auth = fn => (...args) => {
   const { token } = getContext().request.headers
 
   if (token !== 'tropa') {
-    throw new ApiError('Authorization failed')
+    throw new ApiError('Authorization failed', 401)
   }
 
   return fn(...args)
@@ -43,7 +43,7 @@ const methodLogger = fn => (...args) => {
   return fn(...args)
 }
 
-const validate = (validationSchema, options) => async payload => {
+const validate = (validationSchema, options = {}) => async payload => {
   await validationSchema.assert(payload, options)
 
   return payload
@@ -51,7 +51,7 @@ const validate = (validationSchema, options) => async payload => {
 
 @Decorate(auth, classLogger)
 @Prefix('/user')
-class UserController {
+export default class UserController {
   @Decorate(methodLogger)
   @Get('/')
   getProfiles() {
@@ -89,12 +89,12 @@ class UserController {
 
   @Put('/{id}')
   updateProfile(@Param() { id }, @Body() changes) {
-    if (!id) throw new ApiError('id is required')
-    if (!changes) throw new ApiError('changes are required')
+    if (!id) throw new ApiError('id is required', 400)
+    if (!changes) throw new ApiError('changes are required', 400)
 
     const user = users.find(user => user.id === id)
 
-    if (!user) throw new ApiError('User not found')
+    if (!user) throw new ApiError('User not found', 404)
 
     Object.assign(user, changes)
   }
@@ -106,7 +106,7 @@ class UserController {
 
   @Delete('/{id}')
   deleteProfile(@Param('id') id) {
-    if (!id) throw new ApiError('id is required')
+    if (!id) throw new ApiError('id is required', 400)
 
     users = users.filter(user => user.id !== id)
   }
