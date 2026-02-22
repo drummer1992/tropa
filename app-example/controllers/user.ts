@@ -18,6 +18,7 @@ import {
   getContext,
 } from '../../lib'
 import logger from '../logger'
+import { TropaResponse } from "../../types";
 
 let users = []
 
@@ -59,7 +60,7 @@ export default class UserController {
   }
 
   @Get('/{userId}/profile/{profileId}')
-  getProfileById(@Response() res, @Param('userId') userId, @Param('profileId') profileId) {
+  getProfileById(@Response() res: TropaResponse, @Param('userId') userId: string, @Param('profileId') profileId: string) {
     const user = users.find(user => user.id === userId && user.profile?.id === profileId)
 
     res.raw.setHeader('Content-Type', 'application/json')
@@ -78,7 +79,7 @@ export default class UserController {
           id: number().required(),
         }).strict().required(),
       }).strict().required(),
-    )) body,
+    )) body?: object,
   ) {
     const id = Math.floor(Math.random() * 1e6).toString()
 
@@ -88,7 +89,7 @@ export default class UserController {
   }
 
   @Put('/{id}')
-  updateProfile(@Param() { id }, @Body() changes) {
+  updateProfile(@Param() {id}, @Body() changes?: object) {
     if (!id) throw new ApiError('id is required', 400)
     if (!changes) throw new ApiError('changes are required', 400)
 
@@ -105,14 +106,14 @@ export default class UserController {
   }
 
   @Delete('/{id}')
-  deleteProfile(@Param('id') id) {
+  deleteProfile(@Param('id') id: string) {
     if (!id) throw new ApiError('id is required', 400)
 
     users = users.filter(user => user.id !== id)
   }
 
   @Get('/ctx')
-  getCtx(@Context() ctx) {
+  getCtx(@Context() ctx: object) {
     return ctx
   }
 }
