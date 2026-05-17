@@ -1,5 +1,4 @@
-'use strict'
-
+import assert from 'assert'
 import ControllerMeta from '../src/meta/controller'
 import * as meta from '../src/meta'
 import { controllersMeta } from '../src/meta/storage'
@@ -7,20 +6,20 @@ import * as tropa from '../src'
 import { Prefix } from '../src'
 import { notFoundRoute } from '../src/meta/route'
 
-const initRoute = (method, path, prefix = '') => {
-  const HttpMethod = tropa[method]
+const initRoute = (method: string, path: string, prefix: string = '') => {
+  const HttpMethod = (tropa as any)[method]
 
-  new ControllerMeta(
-    @Prefix(prefix)
-    class {
-      @HttpMethod(path)
-      getFoo() {
-      }
-    },
-  )
+  @Prefix(prefix)
+  class TestController {
+    @HttpMethod(path)
+    getFoo() {
+    }
+  }
+
+  new ControllerMeta(TestController)
 }
 
-const findRoute = (url, method) => {
+const findRoute = (url: string, method: string) => {
   const route = meta.findRoute(url, method)
 
   return route === notFoundRoute ? undefined : route

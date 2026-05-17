@@ -1,6 +1,7 @@
+import assert from 'assert'
 import Url from '../src/utils/url'
 
-const route = pattern => new Url('GET', pattern).regExp
+const route = (pattern: string): RegExp => new Url('GET', pattern).regExp
 
 describe('url', () => {
   it('regexp', () => {

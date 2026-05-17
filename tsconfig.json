@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "experimentalDecorators": true,
+    "strict": false,
+    "allowJs": true,
+    "noEmit": true,
+    "types": ["node", "mocha"]
+  },
+  "include": ["test/**/*.ts", "types/**/*.d.ts"]
+}

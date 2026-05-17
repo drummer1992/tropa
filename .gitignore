@@ -1,3 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output
+lib/
+
+# Lock files
 yarn.lock
-node_modules
-lib
+app-example/package-lock.json
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
